@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<nav class="bg-neutral text-neutral-content shadow-lg mb-6">
+  <div
+    class="navbar w-full max-w-screen-lg mx-auto px-4 py-2 flex flex-col flex-wrap md:flex-row justify-center md:justify-between items-center">
+    <span class="font-bold text-lg">📝 SIAE</span>
+
+    <div class="flex flex-col flex-wrap md:flex-row items-center justify-center gap-4">
+      @if (currentUser(); as user) {
+      <div class="flex flex-col md:flex-row items-center gap-4">
+        <span class="opacity-80">👤 {{ user.fullName }}</span>
+      </div>
+      }
+
+      <button class="btn btn-sm btn-outline btn-error" (click)="logout()">
+        🚪 Cerrar Sesión
+      </button>
+      <div class="dropdown dropdown-end">
+        <label tabindex="0" class="btn btn-sm btn-outline w-auto md:w-full">
+          🎨 Tema
+        </label>
+        <ul tabindex="0"
+          class="dropdown-content menu p-2 shadow text-gray-600 dark:text-gray-500 bg-base-200 rounded-box w-40">
+          <li><a (click)="changeTheme('light')">☀️ Claro</a></li>
+          <li><a (click)="changeTheme('dark')">🌙 Oscuro</a></li>
+          <li><a (click)="changeTheme('night')">🌙 Night</a></li>
+          <li><a (click)="changeTheme('synthwave')">🦄 Synthwave</a></li>
+          <li><a (click)="changeTheme('cupcake')">🍰 Cupcake</a></li>
+
+        </ul>
+      </div>
+    </div>
+
+    <nav class="mt-4 flex flex-wrap gap-4 text-sm">
+      @for (m of menus; track m.label) {
+      @if (!m.items) {
+      <a [routerLink]="m.to" class="px-3 py-2 rounded bg-blue-50 hover:bg-blue-100 text-black">{{ m.label }}</a>
+      } @else {
+      <div class="relative" (mouseenter)="onMenuMouseEnter(m.label)" (mouseleave)="onMenuMouseLeave(m.label)">
+        <button [attr.data-menu-btn]="m.label" (click)="toggleMenu(m.label, $event)"
+          (keydown)="onMenuButtonKeydown(m.label, $event)" aria-haspopup="true"
+          [attr.aria-expanded]="openMenu() === m.label"
+          class="px-3 py-2 rounded bg-blue-50 text-gray-700 hover:bg-blue-100 inline-flex items-center gap-1">
+          {{ m.label }} <span aria-hidden="true">▾</span>
+        </button>
+        <div *ngIf="openMenu() === m.label" [attr.data-menu]="m.label" role="menu"
+          class="absolute left-0 mt-2 w-48 rounded-md border bg-white shadow-lg z-10">
+          @for (it of m.items; track it.label) {
+          <a role="menuitem" tabindex="0" (keydown)="onMenuItemKeydown($event, m.label)" (click)="onMenuItemClick(it)"
+            class="block px-3 py-2 text-gray-600 hover:bg-blue-50">{{ it.label }}</a>
+          }
+        </div>
+      </div>
+      }
+      }
+    </nav>
+  </div>
+</nav>

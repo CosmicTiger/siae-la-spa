@@ -1,0 +1,13 @@
+<!-- tiles -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  @for (t of tiles; track t.title) {
+  <a [routerLink]="t.to"
+    class="rounded-xl border bg-white p-5 shadow-sm hover:shadow transition flex flex-col items-center text-center">
+    <div class="h-28 w-28 grid place-content-center rounded-xl bg-blue-50 text-5xl mb-4">{{ t.icon }}</div>
+    <div class="font-semibold text-gray-800 dark:text-black-200 mb-3">{{ t.title }}</div>
+    <span
+      class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-white text-sm hover:bg-blue-700">
+      {{ t.cta || ('Ver ' + t.title) }}
+    </span>
+  </a>
+  }

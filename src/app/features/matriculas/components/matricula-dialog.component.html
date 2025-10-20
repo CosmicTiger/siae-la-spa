@@ -1,0 +1,66 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center" *ngIf="open">
+  <div class="fixed inset-0 bg-black/40"></div>
+  <div #host class="bg-white rounded shadow-lg w-full max-w-2xl z-10 p-4" role="dialog" aria-modal="true"
+    aria-label="Crear matrícula">
+    <h3 class="text-lg font-semibold">Crear Matrícula</h3>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-4 space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm">Alumno</label>
+          <input #alumnoFilterInput class="input mb-1" placeholder="Buscar alumno..." [(ngModel)]="alumnoFilter"
+            name="alumnoFilter" aria-label="Buscar alumno" />
+          <select formControlName="alumnoId" class="input">
+            <option [ngValue]="null">-- Seleccione --</option>
+            <option *ngFor="let a of filteredAlumnos" [value]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm">Nivel detalle</label>
+          <select formControlName="nivelDetalleId" class="input">
+            <option [ngValue]="null">-- Seleccione --</option>
+            <option *ngFor="let n of niveles" [value]="n.id">{{ n.nombre || n.descripcion || n.id }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm">Periodo</label>
+          <select formControlName="periodoId" class="input">
+            <option [ngValue]="null">-- Seleccione --</option>
+            <option *ngFor="let p of periodos" [value]="p.id">{{ p.nombre || p.descripcion || p.id }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm">Apoderado (opcional)</label>
+          <input class="input mb-1" placeholder="Buscar apoderado..." [(ngModel)]="apoderadoFilter"
+            name="apoderadoFilter" />
+          <select formControlName="apoderadoId" class="input">
+            <option [ngValue]="null">-- No especificar --</option>
+            <option *ngFor="let a of filteredApoderados" [value]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm">Situación</label>
+        <input type="text" formControlName="situacion" class="input" />
+      </div>
+
+      <div>
+        <label class="block text-sm">Institución de procedencia</label>
+        <input type="text" formControlName="institucionProcedencia" class="input" />
+      </div>
+
+      <div class="flex items-center gap-3">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" formControlName="esRepetente" />
+          <span class="text-sm">Es repetente</span>
+        </label>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" class="btn btn-secondary" (click)="close(false)">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading">Crear</button>
+      </div>
+      <p *ngIf="error" class="text-sm text-red-600 mt-2">{{ error }}</p>
+    </form>
+  </div>
+</div>

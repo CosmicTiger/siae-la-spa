@@ -1,0 +1,47 @@
+<div class="p-4">
+  <h2 class="text-2xl font-bold">Matrículas</h2>
+  <p class="mt-2 text-sm text-gray-600">Gestión de matrículas (listado y creación).</p>
+
+  <div class="mt-4 space-y-3">
+    <div class="flex items-center gap-2">
+      <label class="text-sm">Alumno</label>
+      <select (change)="onAlumnoChange($event)" class="input">
+        <option value="">-- Seleccione --</option>
+        <option *ngFor="let a of alumnos" [value]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
+      </select>
+
+      <button class="btn btn-sm btn-primary" (click)="openNew()" [disabled]="!selectedAlumnoId()">
+        Nueva matrícula
+      </button>
+    </div>
+
+    <div class="card overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50 text-xs uppercase text-gray-600">
+          <tr>
+            <th class="px-4 py-3 text-left">Alumno</th>
+            <th class="px-4 py-3 text-left">NivelDetalleId</th>
+            <th class="px-4 py-3 text-left">Periodo</th>
+            <th class="px-4 py-3 text-left">Fecha</th>
+            <th class="px-4 py-3 text-left">Apoderado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 bg-white text-gray-800">
+          <tr *ngFor="let m of matriculas">
+            <td class="px-4 py-3">{{ m.alumno?.nombres }} {{ m.alumno?.apellidos }}</td>
+            <td class="px-4 py-3">{{ m.nivelDetalleId }}</td>
+            <td class="px-4 py-3">{{ m.periodoId }}</td>
+            <td class="px-4 py-3">{{ m.fechaRegistro | date : 'short' }}</td>
+            <td class="px-4 py-3">{{ m.apoderado?.nombres || '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="matriculas.length === 0" class="text-sm text-gray-500">No hay matrículas para el alumno seleccionado.
+    </div>
+  </div>
+
+  <app-matricula-dialog *ngIf="showDialog()" [open]="true" [alumnoId]="selectedAlumnoId()"
+    (closed)="onDialogClosed($event)"></app-matricula-dialog>
+</div>
