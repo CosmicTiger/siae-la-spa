@@ -18,6 +18,15 @@ export const routes: Routes = [
     canActivate: [canActivateAuth],
     loadComponent: () =>
       import('./features/alumnos/pages/alumnos.component').then((m) => m.AlumnosComponent),
+    children: [
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./features/alumnos/components/alumno-detail.component').then(
+            (m) => m.AlumnoDetailComponent
+          ),
+      },
+    ],
   },
   {
     path: 'matriculas',

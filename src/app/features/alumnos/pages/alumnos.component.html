@@ -12,20 +12,26 @@
         <th class="px-4 py-3 text-left">Ciudad</th>
         <th class="px-4 py-3 text-left">Dirección</th>
         <th class="px-4 py-3 text-left">Activo</th>
+        <th class="px-4 py-3 text-left">Acciones</th>
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-100 bg-white text-gray-800">
-      <tr *ngFor="let a of items()">
-        <td class="px-4 py-3">{{ a.nombres }} {{ a.apellidos }}</td>
-        <td class="px-4 py-3">{{ a.documentoIdentidad || '—' }}</td>
-        <td class="px-4 py-3">{{ a.ciudad || '—' }}</td>
-        <td class="px-4 py-3">{{ a.direccion || '—' }}</td>
+      <tr *ngFor="let item of items()">
+        <td class="px-4 py-3">{{ item.nombres }} {{ item.apellidos }}</td>
+        <td class="px-4 py-3">{{ item.documentoIdentidad || '—' }}</td>
+        <td class="px-4 py-3">{{ item.ciudad || '—' }}</td>
+        <td class="px-4 py-3">{{ item.direccion || '—' }}</td>
         <td class="px-4 py-3">
-          <span class="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs" [class.bg-green-100]="a.activo"
-            [class.text-green-800]="a.activo" [class.bg-gray-100]="!a.activo" [class.text-gray-700]="!a.activo">
-            <span class="h-2 w-2 rounded-full" [class.bg-green-500]="a.activo" [class.bg-gray-400]="!a.activo"></span>
-            {{ a.activo ? 'Sí' : 'No' }}
+          <span class="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs"
+            [class.bg-green-100]="item.activo" [class.text-green-800]="item.activo" [class.bg-gray-100]="!item.activo"
+            [class.text-gray-700]="!item.activo">
+            <span class="h-2 w-2 rounded-full" [class.bg-green-500]="item.activo"
+              [class.bg-gray-400]="!item.activo"></span>
+            {{ item.activo ? 'Sí' : 'No' }}
           </span>
+        </td>
+        <td class="px-4 py-3">
+          <a class="btn btn-sm btn-ghost" [routerLink]="[item.id]">Ver</a>
         </td>
       </tr>
     </tbody>
@@ -40,3 +46,6 @@
 
 <!-- Modal -->
 <app-student-dialog [(open)]="creating" (closed)="onCreated($event)"></app-student-dialog>
+
+<!-- Nested route outlet for detail modal -->
+<router-outlet></router-outlet>

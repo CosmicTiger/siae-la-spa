@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AlumnosService } from '../service/alumnos.service';
 import { AlumnoReadDto } from '../../../core/models';
@@ -8,7 +9,7 @@ import { StudentDialogComponent } from '../components/student-dialog.component';
 @Component({
   standalone: true,
   selector: 'app-alumnos',
-  imports: [CommonModule, ReactiveFormsModule, StudentDialogComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, StudentDialogComponent],
   templateUrl: './alumnos.component.html',
 })
 export class AlumnosComponent {

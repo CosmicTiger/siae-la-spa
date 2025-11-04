@@ -99,3 +99,55 @@ export interface MatriculaReadDto {
   esRepetente?: boolean;
   fechaRegistro: string;
 }
+
+// --- Detailed / resumen DTOs used in Alumno detail responses ---
+export interface PersonaResumenDto {
+  nombres: string;
+  apellidos: string;
+  documentoIdentidad?: string | null;
+  fechaNacimiento?: string | null;
+  sexo?: Sexo | string | null;
+  ciudad?: string | null;
+  direccion?: string | null;
+  email?: string | null;
+  numeroTelefono?: string | null;
+}
+
+export interface NivelDetalleDto {
+  nivelDetalleId: number;
+  nivelId: number;
+  nivelDescripcion: string;
+  nivelTurno?: string | null;
+  gradoSeccionId?: number | null;
+  gradoDescripcion?: string | null;
+  seccionDescripcion?: string | null;
+}
+
+export interface MatriculaActualDto {
+  matriculaId: number;
+  nivel: NivelDetalleDto;
+  periodoId: number;
+  situacion?: string | null;
+  esRepetente?: boolean | null;
+  apoderadoId?: number | null;
+  fechaRegistro?: string | null;
+}
+
+export interface TutorResumenDto {
+  apoderadoId: number;
+  personaId?: number | null;
+  nombres: string;
+  apellidos: string;
+  documentoIdentidad?: string | null;
+  email?: string | null;
+  numeroTelefono?: string | null;
+}
+
+// Full detail DTO for an Alumno read by id (matches the sample response)
+export interface AlumnoReadDetailDto {
+  alumnoId: number;
+  persona: PersonaResumenDto;
+  matriculaActual?: MatriculaActualDto | null;
+  tutor?: TutorResumenDto | null;
+  activo: boolean;
+}

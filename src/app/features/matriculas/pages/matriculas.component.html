@@ -20,7 +20,9 @@
         <thead class="bg-gray-50 text-xs uppercase text-gray-600">
           <tr>
             <th class="px-4 py-3 text-left">Alumno</th>
-            <th class="px-4 py-3 text-left">NivelDetalleId</th>
+            <th class="px-4 py-3 text-left">Nivel</th>
+            <th class="px-4 py-3 text-left">Turno</th>
+            <th class="px-4 py-3 text-left">Grado/Sección</th>
             <th class="px-4 py-3 text-left">Periodo</th>
             <th class="px-4 py-3 text-left">Fecha</th>
             <th class="px-4 py-3 text-left">Apoderado</th>
@@ -29,10 +31,13 @@
         <tbody class="divide-y divide-gray-100 bg-white text-gray-800">
           <tr *ngFor="let m of matriculas">
             <td class="px-4 py-3">{{ m.alumno?.nombres }} {{ m.alumno?.apellidos }}</td>
-            <td class="px-4 py-3">{{ m.nivelDetalleId }}</td>
+            <td class="px-4 py-3">{{ m.nivelDetalle?.nivel?.descripcionNivel || '—' }}</td>
+            <td class="px-4 py-3">{{ m.nivelDetalle?.nivel?.descripcionTurno || '—' }}</td>
+            <td class="px-4 py-3">{{ m.nivelDetalle?.gradoSeccion?.descripcionGrado }}
+              {{ m.nivelDetalle?.gradoSeccion?.descripcionSeccion }}</td>
             <td class="px-4 py-3">{{ m.periodoId }}</td>
             <td class="px-4 py-3">{{ m.fechaRegistro | date : 'short' }}</td>
-            <td class="px-4 py-3">{{ m.apoderado?.nombres || '—' }}</td>
+            <td class="px-4 py-3">{{ m.apoderadoId || '—' }}</td>
           </tr>
         </tbody>
       </table>
