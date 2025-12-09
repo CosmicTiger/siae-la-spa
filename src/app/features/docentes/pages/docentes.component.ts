@@ -83,9 +83,10 @@ export class DocentesComponent {
   }
 
   toggleActive(item: DocenteReadDto) {
+    console.log('Toggling active', item);
     const id = item.id || (item as any).docenteId;
     if (!id) return;
-    this.svc.setActive(id, !item.activo).subscribe({
+    this.svc.setActive(id, !item.activo, item).subscribe({
       next: () => this.load(),
       error: (err) => console.error('Error toggling active', err),
     });

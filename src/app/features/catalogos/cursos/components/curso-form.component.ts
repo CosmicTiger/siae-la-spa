@@ -10,8 +10,10 @@ import {
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CursoService } from '../service/curso.service';
-import { EntityDialogComponent } from '@app/shared/components/entity-dialog/entity-dialog.component';
-import { FieldDef } from '@app/shared/components/generic-modal/generic-modal.component';
+import {
+  EntityDialogComponent,
+  FieldDef,
+} from '@app/shared/components/entity-dialog/entity-dialog.component';
 
 @Component({
   standalone: true,
@@ -36,9 +38,9 @@ export class CursoFormComponent implements OnChanges {
   private svc = inject(CursoService);
 
   schema: FieldDef[] = [
-    { key: 'nombre', label: 'Nombre', type: 'string' },
-    { key: 'descripcion', label: 'Descripción', type: 'string' },
-    { key: 'activo', label: 'Activo', type: 'boolean' },
+    { key: 'codigo', label: 'Nombre', type: 'text' },
+    { key: 'descripcion', label: 'Descripción', type: 'text' },
+    { key: 'activo', label: 'Activo', type: 'checkbox' },
   ];
 
   ngOnChanges(_: SimpleChanges) {
@@ -60,6 +62,7 @@ export class CursoFormComponent implements OnChanges {
         nombre: v.nombre,
         descripcion: v.descripcion,
         activo: v.activo,
+        codigo: v.codigo,
       };
       return this.svc.update(id, updateDto);
     } else {
@@ -67,6 +70,7 @@ export class CursoFormComponent implements OnChanges {
         nombre: v.nombre,
         descripcion: v.descripcion,
         activo: v.activo,
+        codigo: v.codigo,
       };
       return this.svc.create(createDto);
     }

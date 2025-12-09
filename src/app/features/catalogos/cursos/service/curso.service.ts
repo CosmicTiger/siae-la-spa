@@ -25,8 +25,12 @@ export class CursoService {
     return this.api.put<any>(`${this.base}/${id}`, payload);
   }
 
-  setActive(id: number, active: boolean) {
-    // return this.api.delete<any>(`${this.base}/${id}`);
-    return this.update(id, { activo: active });
+  setActive(id: number, active: boolean, curso: any) {
+    const payload: any = {
+      ...curso,
+      activo: active,
+    };
+
+    return this.update(id, payload);
   }
 }

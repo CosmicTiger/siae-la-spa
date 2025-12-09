@@ -9,6 +9,7 @@ export interface PersonaReadDto {
   ciudad: string | null;
   direccion: string | null;
   activo: boolean;
+  sexo: Sexo;
 }
 
 export interface AlumnoReadDto extends PersonaReadDto {}
