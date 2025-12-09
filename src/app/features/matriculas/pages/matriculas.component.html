@@ -9,44 +9,16 @@
         <option value="">-- Seleccione --</option>
         <option *ngFor="let a of alumnos" [value]="a.id">{{ a.nombres }} {{ a.apellidos }}</option>
       </select>
-
-      <button class="btn btn-sm btn-primary" (click)="openNew()" [disabled]="!selectedAlumnoId()">
-        Nueva matrícula
-      </button>
     </div>
-
-    <div class="card overflow-hidden">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50 text-xs uppercase text-gray-600">
-          <tr>
-            <th class="px-4 py-3 text-left">Alumno</th>
-            <th class="px-4 py-3 text-left">Nivel</th>
-            <th class="px-4 py-3 text-left">Turno</th>
-            <th class="px-4 py-3 text-left">Grado/Sección</th>
-            <th class="px-4 py-3 text-left">Periodo</th>
-            <th class="px-4 py-3 text-left">Fecha</th>
-            <th class="px-4 py-3 text-left">Apoderado</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100 bg-white text-gray-800">
-          <tr *ngFor="let m of matriculas">
-            <td class="px-4 py-3">{{ m.alumno?.nombres }} {{ m.alumno?.apellidos }}</td>
-            <td class="px-4 py-3">{{ m.nivelDetalle?.nivel?.descripcionNivel || '—' }}</td>
-            <td class="px-4 py-3">{{ m.nivelDetalle?.nivel?.descripcionTurno || '—' }}</td>
-            <td class="px-4 py-3">{{ m.nivelDetalle?.gradoSeccion?.descripcionGrado }}
-              {{ m.nivelDetalle?.gradoSeccion?.descripcionSeccion }}</td>
-            <td class="px-4 py-3">{{ m.periodoId }}</td>
-            <td class="px-4 py-3">{{ m.fechaRegistro | date : 'short' }}</td>
-            <td class="px-4 py-3">{{ m.apoderadoId || '—' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-data-table [items]="matriculas" [columns]="columns" [newLabel]="selectedAlumnoId() ? 'Nueva matrícula' : null"
+      (create)="openNew()">
+    </app-data-table>
 
     <div *ngIf="matriculas.length === 0" class="text-sm text-gray-500">No hay matrículas para el alumno seleccionado.
     </div>
   </div>
 
-  <app-matricula-dialog *ngIf="showDialog()" [open]="true" [alumnoId]="selectedAlumnoId()"
-    (closed)="onDialogClosed($event)"></app-matricula-dialog>
+  <app-entity-dialog [open]="showDialog()" (openChange)="showDialog.set($event)" [title]="'Nueva matrícula'"
+    [schema]="schema" [submitFn]="submitFn" [onInit]="onInitFn" (closed)="onDialogClosed($event)">
+  </app-entity-dialog>
 </div>

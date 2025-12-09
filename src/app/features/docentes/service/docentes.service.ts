@@ -22,9 +22,7 @@ export class DocentesService {
   list(page = 1, pageSize = 10, search = ''): Observable<PaginationResult<DocenteReadDto>> {
     const params: Record<string, any> = { page, pageSize };
     if (search) params['search'] = search;
-    return this.api
-      .get<PaginationResult<DocenteReadDto>>(this.base, { params })
-      .pipe(map((r) => r!));
+    return this.api.get<PaginationResult<DocenteReadDto>>(this.base, params).pipe(map((r) => r!));
   }
 
   getById(id: number): Observable<DocenteReadDto | null> {

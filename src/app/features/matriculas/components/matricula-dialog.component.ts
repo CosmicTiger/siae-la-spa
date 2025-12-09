@@ -15,8 +15,8 @@ import { FormGroup } from '@angular/forms';
 import { MatriculasService } from '../service/matriculas.service';
 import { MatriculaCreateDto } from '../../../core/models';
 import { AlumnosService } from '../../alumnos/service/alumnos.service';
-import { NivelesService } from '../../catalogs/service/niveles.service';
-import { PeriodosService } from '../../catalogs/service/periodos.service';
+import { NivelesService } from '../../catalogs/niveles/service/niveles.service';
+import { PeriodosService } from '../../catalogs/periodos/service/periodos.service';
 
 @Component({
   standalone: true,

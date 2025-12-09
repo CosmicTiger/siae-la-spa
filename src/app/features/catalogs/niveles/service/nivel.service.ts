@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { ApiService } from '../../../core/api.service';
-import { map } from 'rxjs';
+import { ApiService } from '../../../../core/api.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class CursosService {
-  api = inject(ApiService);
-  base = '/api/cursos';
+export class NivelService {
+  private api = inject(ApiService);
+  private base = '/api/niveles';
 
-  list(page = 1, pageSize = 50, search = '') {
+  listar(page = 1, pageSize = 50, filter?: any) {
     const params: Record<string, any> = { page, pageSize };
-    if (search) params['search'] = search;
-    return this.api.get<any[]>(this.base, params).pipe(map((r) => r || []));
+    if (filter) Object.keys(filter).forEach((k) => (params[k] = filter[k]));
+    return this.api.get<any>(this.base, params).pipe(map((r) => r));
   }
 
   getById(id: number) {

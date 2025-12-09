@@ -1,9 +1,9 @@
 import { Injectable, computed, inject, signal, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ApiResponse, AuthResponse, LoginDto } from '../../../core/models';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, catchError, map, of } from 'rxjs';
+import { ApiService } from '../../../core/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
   // Provide a WritableSignal so standalone components can react to changes immediately
   user = signal<AuthResponse | null>(this.readStoredUser());
   private authUrl = environment.apiBase + '/api/auth';
-  private http = inject(HttpClient);
+  private api = inject(ApiService);
   private router = inject(Router);
   // keep computed for compatibility, but prefer `user` signal directly in components
   currentUser = computed((): AuthResponse | null => this.user());
@@ -37,9 +37,9 @@ export class AuthService {
   }
 
   login(dto: LoginDto) {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.authUrl}/login`, dto).pipe(
+    return this.api.post<AuthResponse>(`/api/auth/login`, dto).pipe(
       map((res) => {
-        this.setUser(res.data as AuthResponse);
+        this.setUser(res as AuthResponse);
         return true;
       }),
       catchError((err) => this.handleAuthError(err))

@@ -38,18 +38,18 @@ export class NavbarComponent implements OnInit {
   private hoverCloseTimeout: ReturnType<typeof setTimeout> | null = null;
   private readonly HOVER_CLOSE_DELAY_MS = 200; // ms
 
+  // Keep menu entries aligned with existing `app.routes.ts` paths
   menus: Menu[] = [
     {
       label: 'Configuraciones',
       items: [
-        { label: 'Año Lectivo', to: '/config/anho_lectivo' },
-        { label: 'Crear Nivel Académico', to: '/config/nivel_academico' },
-        { label: 'Crear Grados y Secciones', to: '/config/grados_secciones' },
-        { label: 'Asignar Grados por Niveles', to: '/config/asignar_grados_niveles' },
-        { label: 'Asignar Cursos por Niveles', to: '/config/asignar_cursos_niveles' },
-        { label: 'Asignar Vacantes', to: '/config/asignar_vacantes' },
-        { label: 'Crear Horario', to: '/config/crear_horario' },
-        { label: 'Asignar Docentes a Cursos', to: '/config/asignar_docentes_cursos' },
+        { label: 'Año Lectivo', to: '/catalogos/creacion_anho_lectivo' },
+        { label: 'Periodos', to: '/catalogos/periodos' },
+        { label: 'Niveles', to: '/catalogos/niveles' },
+        { label: 'Grados y Secciones', to: '/catalogos/grado-seccion' },
+        { label: 'Cursos', to: '/catalogos/cursos' },
+        { label: 'Vacantes', to: '/catalogos/vacantes' },
+        { label: 'Horarios', to: '/catalogos/horarios' },
       ],
     },
     {
@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit {
         { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
       ],
     },
-    { label: 'Cursos', items: [{ label: 'Listado de Cursos', to: '/cursos' }] },
+    { label: 'Cursos', items: [{ label: 'Listado de Cursos', to: '/catalogos/cursos' }] },
     {
       label: 'Matrícula',
       items: [{ label: 'Historial Matrículas', to: '/matriculas' }],

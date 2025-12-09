@@ -1,5 +1,10 @@
-<app-data-table [searchControl]="search" [items]="items()" [columns]="columns" [page]="page()"
-  [totalPages]="totalPages()" [viewLinkKey]="'id'" [newLabel]="'Nuevo alumno'" (create)="openCreate()"
+<div class="p-4">
+  <h2 class="text-2xl font-bold">Alumnos</h2>
+  <p class="mt-2 text-sm text-gray-600">Gestión de alumnos.</p>
+</div>
+
+<app-data-table [searchControl]="search" [searchPlaceholder]="'Buscar alumnos...'" [items]="items()" [columns]="columns"
+  [page]="page()" [totalPages]="totalPages()" [viewLinkKey]="'id'" [newLabel]="'Nuevo alumno'" (create)="openCreate()"
   (view)="openView($event)" (edit)="edit($event)" (toggleActive)="toggleActive($event)" (prev)="prev()"
   (next)="next()"></app-data-table>
 

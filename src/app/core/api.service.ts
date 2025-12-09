@@ -47,4 +47,19 @@ export class ApiService {
   delete<T = any>(path: string) {
     return this.http.delete<ApiResponse<T>>(this.url(path)).pipe(map((r) => r.data ?? null));
   }
+
+  /**
+   * GET that returns a Blob (for CSV / binary downloads).
+   * `params` is a simple object of key->value (ApiService will convert to HttpParams).
+   */
+  getBlob(path: string, params?: Record<string, any>) {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach((k) => {
+        const v = params[k];
+        if (v !== undefined && v !== null) httpParams = httpParams.set(k, String(v));
+      });
+    }
+    return this.http.get(this.url(path), { params: httpParams, responseType: 'blob' });
+  }
 }
