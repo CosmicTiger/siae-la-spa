@@ -69,4 +69,13 @@ export class AlumnosService {
   create(payload: AlumnoCreateWithAccountsDto) {
     return this.http.post<ApiResponse<AlumnoCreateResultDto>>(this.base, payload);
   }
+
+  update(id: number, payload: any) {
+    return this.http.put<ApiResponse<any>>(`${this.base}/${id}`, payload);
+  }
+
+  setActive(id: number, activo: boolean) {
+    // PATCH with partial update for active flag
+    return this.http.patch<ApiResponse<any>>(`${this.base}/${id}`, { activo });
+  }
 }

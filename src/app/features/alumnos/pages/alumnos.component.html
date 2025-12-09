@@ -31,7 +31,13 @@
           </span>
         </td>
         <td class="px-4 py-3">
-          <a class="btn btn-sm btn-ghost" [routerLink]="[item.id]">Ver</a>
+          <div class="flex items-center gap-2">
+            <a class="btn btn-sm btn-ghost" [routerLink]="[item.id]">Ver</a>
+            <button class="btn btn-sm btn-outline" (click)="edit(item)">Editar</button>
+            <button class="btn btn-sm" (click)="toggleActive(item)">
+              {{ item.activo ? 'Desactivar' : 'Activar' }}
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -45,7 +51,7 @@
 </div>
 
 <!-- Modal -->
-<app-student-dialog [(open)]="creating" (closed)="onCreated($event)"></app-student-dialog>
+<app-student-dialog [(open)]="creating" [initial]="editing()" (closed)="onCreated($event)"></app-student-dialog>
 
 <!-- Nested route outlet for detail modal -->
 <router-outlet></router-outlet>

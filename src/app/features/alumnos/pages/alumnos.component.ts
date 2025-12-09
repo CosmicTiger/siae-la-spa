@@ -21,6 +21,8 @@ export class AlumnosComponent {
   totalItems = signal(0);
   items = signal<AlumnoReadDto[]>([]);
   creating = signal(false);
+  // when editing, reuse the dialog but provide initial data
+  editing = signal<AlumnoReadDto | null>(null);
 
   totalPages = computed(() => Math.max(1, Math.ceil(this.totalItems() / this.pageSize())));
 
@@ -52,10 +54,25 @@ export class AlumnosComponent {
   }
 
   openCreate() {
+    this.editing.set(null);
     this.creating.set(true);
   }
   onCreated(ok: boolean) {
     this.creating.set(false);
     if (ok) this.load();
+  }
+
+  edit(item: AlumnoReadDto) {
+    this.editing.set(item);
+    this.creating.set(true);
+  }
+
+  toggleActive(item: AlumnoReadDto) {
+    const id = item.id || (item as any).alumnoId;
+    if (!id) return;
+    this.svc.setActive(id, !item.activo).subscribe({
+      next: () => this.load(),
+      error: (err) => console.error('Error toggling active', err),
+    });
   }
 }
