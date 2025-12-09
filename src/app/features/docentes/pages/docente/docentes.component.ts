@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { DocentesService } from '../service/docentes.service';
+import { DocentesService } from '../../service/docentes.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DocenteReadDto } from '@app/core/models/persona.model';
-import { DocenteDialogComponent } from '../components/docente-dialog.component';
+import { DocenteDialogComponent } from '../../components/dialog/docente-dialog.component';
 import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
 
 @Component({
