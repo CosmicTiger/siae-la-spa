@@ -1,0 +1,49 @@
+<ng-container *ngIf="isRouted; else maybeHosted">
+  <div class="p-4 max-w-xl">
+    <div class="flex justify-between items-start">
+      <h3 class="text-xl font-semibold">Docente <span *ngIf="!loading && docenteId"
+          class="badge badge-info">{{ docenteId }}</span></h3>
+      <button class="btn btn-ghost" (click)="close()">Cerrar</button>
+    </div>
+
+    <div *ngIf="loading" class="mt-4">Cargando...</div>
+
+    <div *ngIf="!loading && docente" class="mt-4 space-y-3">
+      <div><strong>Nombre:</strong> {{ docente.nombres || '—' }} {{ docente.apellidos || '' }}</div>
+      <div><strong>DNI:</strong> {{ docente.documentoIdentidad || '—' }}</div>
+      <div><strong>Email:</strong> {{ docente.email || '—' }}</div>
+      <div><strong>Teléfono:</strong> {{ docente.numeroTelefono || '—' }}</div>
+      <div><strong>Ciudad:</strong> {{ docente.ciudad || '—' }}</div>
+    </div>
+
+    <div *ngIf="!loading && !docente" class="mt-4 text-sm text-gray-500">No se encontró el docente.</div>
+  </div>
+</ng-container>
+
+<ng-template #maybeHosted>
+  <ng-container *ngIf="isHosted; else emptyTpl">
+    <ng-template [ngTemplateOutlet]="hostedTpl"></ng-template>
+  </ng-container>
+  <ng-template #emptyTpl></ng-template>
+</ng-template>
+
+<ng-template #hostedTpl>
+  <div class="p-4 max-w-2xl">
+    <div class="flex justify-between items-start">
+      <h3 class="text-xl font-semibold">Docente</h3>
+      <button class="btn btn-ghost" (click)="close()">Cerrar</button>
+    </div>
+
+    <div *ngIf="loading" class="mt-4">Cargando...</div>
+
+    <div *ngIf="!loading && docente" class="mt-4 space-y-3">
+      <div><strong>Nombre:</strong> {{ docente.nombres }} {{ docente.apellidos }}</div>
+      <div><strong>DNI:</strong> {{ docente.documentoIdentidad || '—' }}</div>
+      <div><strong>Email:</strong> {{ docente.email || '—' }}</div>
+      <div><strong>Teléfono:</strong> {{ docente.numeroTelefono || '—' }}</div>
+      <div><strong>Ciudad:</strong> {{ docente.ciudad || '—' }}</div>
+    </div>
+
+    <div *ngIf="!loading && !docente" class="mt-4 text-sm text-gray-500">No se encontró el docente.</div>
+  </div>
+</ng-template>

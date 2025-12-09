@@ -1,0 +1,16 @@
+<div *ngIf="open" class="fixed inset-0 z-50" role="dialog" aria-modal="true">
+  <div class="absolute inset-0 bg-black/50" (click)="close(false)"></div>
+
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="card w-full max-w-3xl p-6 max-h-[90vh] overflow-auto">
+      <div class="flex items-start justify-between">
+        <h3 *ngIf="title" class="text-lg font-semibold text-gray-700 dark:text-gray-500">{{ title }}</h3>
+        <button class="btn-outline" (click)="close(false)">Cerrar</button>
+      </div>
+
+      <div class="mt-4">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

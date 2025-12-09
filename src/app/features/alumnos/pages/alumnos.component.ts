@@ -1,19 +1,28 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AlumnosService } from '../service/alumnos.service';
 import { AlumnoReadDto } from '../../../core/models';
 import { StudentDialogComponent } from '../components/student-dialog.component';
+import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
 
 @Component({
   standalone: true,
   selector: 'app-alumnos',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, StudentDialogComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    StudentDialogComponent,
+    DataTableComponent,
+  ],
   templateUrl: './alumnos.component.html',
 })
 export class AlumnosComponent {
   svc = inject(AlumnosService);
+  private router = inject(Router);
 
   search = new FormControl('', { nonNullable: true });
   page = signal(1);
@@ -25,6 +34,13 @@ export class AlumnosComponent {
   editing = signal<AlumnoReadDto | null>(null);
 
   totalPages = computed(() => Math.max(1, Math.ceil(this.totalItems() / this.pageSize())));
+
+  columns = [
+    { key: 'fullName', label: 'Nombre' },
+    { key: 'documentoIdentidad', label: 'Documento' },
+    { key: 'ciudad', label: 'Ciudad' },
+    { key: 'direccion', label: 'Dirección' },
+  ];
 
   constructor() {
     this.search.valueChanges.subscribe(() => {
@@ -74,5 +90,11 @@ export class AlumnosComponent {
       next: () => this.load(),
       error: (err) => console.error('Error toggling active', err),
     });
+  }
+
+  openView(item: AlumnoReadDto | number | any) {
+    const id = (item && (item.id ?? (item as any).alumnoId)) ?? item;
+    if (!id) return;
+    this.router.navigate(['/alumnos', id]).catch(() => {});
   }
 }

@@ -37,6 +37,7 @@ import { ModalHostService, MODAL_DATA, MODAL_REF, ModalOpenRequest } from './mod
 export class ModalHostComponent implements OnInit, OnDestroy {
   private svc = inject(ModalHostService);
   private el = inject(ElementRef);
+  private parentInjector = inject(Injector);
 
   open = false;
   component: any = null;
@@ -63,14 +64,19 @@ export class ModalHostComponent implements OnInit, OnDestroy {
         const modalRef = {
           id: this.currentId!,
           afterClosed: this.svc.getPromise(this.currentId!),
-          close: (result?: any) => this.svc.resolve(this.currentId!, result),
+          close: (result?: any) => {
+            // resolve pending promise and then close the host UI
+            this.svc.resolve(this.currentId!, result);
+            // Close the host component so the modal is removed from DOM
+            this.close();
+          },
         };
         this.componentInjector = Injector.create({
           providers: [
             { provide: MODAL_DATA, useValue: op.data },
             { provide: MODAL_REF, useValue: modalRef },
           ],
-          parent: inject(Injector),
+          parent: this.parentInjector,
         });
       } else {
         this.componentInjector = null;

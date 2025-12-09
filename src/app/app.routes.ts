@@ -34,13 +34,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/docentes/pages/docentes.component').then((m) => m.DocentesComponent),
     children: [
-      // {
-      //   path: ':id',
-      //   loadComponent: () =>
-      //     import('./features/docentes/components/docente-detail.component').then(
-      //       (m) => m.DocenteDetailComponent
-      //     ),
-      // },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./features/docentes/components/docente-detail.component').then(
+            (m) => m.DocenteDetailComponent
+          ),
+      },
     ],
   },
   {

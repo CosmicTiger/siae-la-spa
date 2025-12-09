@@ -1,0 +1,63 @@
+<div class="p-4 max-w-2xl">
+  <div class="flex justify-between items-start">
+    <h3 class="text-xl font-semibold">{{ title || 'Detalle' }}</h3>
+    <button class="btn btn-ghost" (click)="close()">Cerrar</button>
+  </div>
+
+  <div *ngIf="schema?.length; else rawJson" class="mt-4 space-y-3">
+    <ng-container *ngFor="let f of schema">
+      <ng-container *ngIf="isVisible(f)">
+        <!-- If field has children, render as a group -->
+        <div *ngIf="f.children?.length; else simpleField" class="pt-2 border-t">
+          <div class="flex justify-between items-center">
+            <div><strong>{{ f.label }}</strong></div>
+            <div *ngIf="f.collapsible">
+              <button class="btn btn-sm btn-ghost" (click)="toggleCollapsed(f.key)">
+                {{ isCollapsed(f.key) ? 'Expandir' : 'Colapsar' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="ml-2 mt-2" *ngIf="!isCollapsed(f.key)">
+            <ng-container *ngIf="getValue(f.key) != null; else noData">
+              <ng-container *ngFor="let cf of f.children">
+                <div *ngIf="isVisible(cf)" class="field">
+                  <strong>{{ cf.label }}:</strong>
+                  <span *ngIf="cf.type === 'date'">
+                    {{ getValue(f.key + '.' + cf.key) ? (getValue(f.key + '.' + cf.key) | date) : '—' }}</span>
+                  <span *ngIf="cf.type === 'boolean'"> {{ getValue(f.key + '.' + cf.key) ? 'Sí' : 'No' }}</span>
+                  <span *ngIf="!cf.type || cf.type === 'string' || cf.type === 'number'">
+                    {{ fmtChild(f.key, cf) }}</span>
+                </div>
+              </ng-container>
+            </ng-container>
+            <ng-template #noData>
+              <div class="text-sm text-gray-400">{{ f.noDataText || 'Datos no disponibles' }}</div>
+            </ng-template>
+          </div>
+        </div>
+
+        <ng-template #simpleField>
+          <div class="field">
+            <strong>{{ f.label }}:</strong>
+            <span *ngIf="f.type === 'date'">
+              {{ getValue(f.key) ? (getValue(f.key) | date) : '—' }}
+            </span>
+            <span *ngIf="f.type === 'boolean'">
+              {{ getValue(f.key) ? 'Sí' : 'No' }}
+            </span>
+            <span *ngIf="!f.type || f.type === 'string' || f.type === 'number'">
+              {{ fmt(f) }}
+            </span>
+          </div>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <ng-template #rawJson>
+    <div class="mt-4">
+      <pre>{{ data | json }}</pre>
+    </div>
+  </ng-template>
+</div>

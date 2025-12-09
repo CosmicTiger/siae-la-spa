@@ -1,0 +1,28 @@
+<app-modal [(open)]="open" [title]="initial ? 'Editar Docente' : 'Nuevo Docente'" (closed)="onModalClosed($event)">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-2 gap-3">
+    <input formControlName="nombres" placeholder="Nombres" class="input input-bordered" />
+    <input formControlName="apellidos" placeholder="Apellidos" class="input input-bordered" />
+    <input formControlName="documentoIdentidad" placeholder="Documento" class="input input-bordered" />
+    <input formControlName="fechaNacimiento" type="date" placeholder="Fecha Nac." class="input input-bordered" />
+    <select formControlName="sexo" class="input input-bordered">
+      <option value="M">M</option>
+      <option value="F">F</option>
+      <option value="O">O</option>
+    </select>
+    <input formControlName="ciudad" placeholder="Ciudad" class="input input-bordered" />
+    <input formControlName="direccion" placeholder="Dirección" class="input input-bordered" />
+    <input formControlName="numeroTelefono" placeholder="Teléfono" class="input input-bordered" />
+    <input formControlName="email" placeholder="Email" class="input input-bordered" />
+    <input formControlName="password" type="password" placeholder="Contraseña" class="input input-bordered" />
+    <label class="flex items-center gap-2 col-span-2">
+      <input type="checkbox" class="checkbox" formControlName="activo" /> Activo
+    </label>
+
+    <div class="col-span-2 flex justify-end gap-2 mt-2">
+      <button type="button" class="btn btn-ghost" (click)="close(false)">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">{{ initial ? 'Actualizar' : 'Crear' }}</button>
+    </div>
+
+    <div *ngIf="error" class="col-span-2 text-red-600">{{ error }}</div>
+  </form>
+</app-modal>

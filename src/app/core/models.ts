@@ -29,6 +29,8 @@ export interface PersonaReadDto {
   apellidos: string;
   codigo: string | null;
   documentoIdentidad: string | null;
+  email?: string | null;
+  numeroTelefono: string | null;
   ciudad: string | null;
   direccion: string | null;
   activo: boolean;
@@ -115,6 +117,79 @@ export interface PersonaResumenDto {
   direccion?: string | null;
   email?: string | null;
   numeroTelefono?: string | null;
+}
+
+// Docentes specific DTOs
+export interface DocenteAsignacionDto {
+  docenteId: number;
+  nivelDetalleCursoId: number;
+  activo: boolean;
+}
+
+export interface DocenteCursoDto {
+  id: number;
+  docenteId: number;
+  nivelDetalleCursoId: number;
+  nivelId: number;
+  nivelDescripcion: string;
+  gradoSeccionId: number;
+  gradoDescripcion: string;
+  cursoId: number;
+  cursoDescripcion: string;
+  activo: boolean;
+  fechaRegistro: string;
+}
+
+export interface CurriculaCreateDto {
+  docenteNivelDetalleCursoId: number;
+  descripcion?: string;
+}
+
+export interface CurriculaDto {
+  id: number;
+  docenteNivelDetalleCursoId: number;
+  titulo: string;
+  descripcion: string;
+  activo: boolean;
+  fechaRegistro: string;
+}
+
+export interface CalificacionCreateDto {
+  curriculaId: number;
+  alumnoId: number;
+  nota: number; // 0..100
+}
+
+export interface CalificacionReadDto {
+  id: number;
+  curriculaId: number;
+  alumnoId: number;
+  nota: number;
+  fechaRegistro: string;
+  activo: boolean;
+}
+
+export interface PersonaInputDto {
+  nombres: string;
+  apellidos: string;
+  documentoIdentidad?: string;
+  fechaNacimiento?: string;
+  sexo: string;
+  ciudad?: string;
+  direccion?: string;
+  numeroTelefono?: string;
+}
+
+export interface DocenteCreateWithAccountsDto {
+  docentePersona: PersonaInputDto;
+  docenteEmail: string;
+  docentePassword: string;
+}
+
+export interface DocenteCreateResultDto {
+  docenteId: number;
+  docentePersonaId: number;
+  docenteEmail: string;
 }
 
 export interface NivelDetalleDto {

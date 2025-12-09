@@ -1,147 +1,134 @@
-<div *ngIf="open" class="fixed inset-0 z-50" role="dialog" aria-modal="true">
-  <div class="absolute inset-0 bg-black/50" (click)="close(false)"></div>
-
-  <div class="absolute inset-0 flex items-center justify-center p-4">
-    <div class="card w-full max-w-3xl p-6 max-h-[90vh] overflow-auto">
-      <div class="flex items-start justify-between">
-        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-500">{{ title }}</h3>
-        <button class="btn-outline" (click)="close(false)">Cerrar</button>
+<app-modal [(open)]="open" [title]="title" (closed)="onModalClosed($event)">
+  <form id="student-dialog-root" class="mt-4 space-y-6" [formGroup]="form" (ngSubmit)="submit()">
+    <section>
+      <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-500 mb-3">Datos del alumno</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="field">
+          <label class="label">Nombres</label><input class="input" formControlName="nombres" />
+          <div *ngIf="form.get('nombres')?.touched && form.get('nombres')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">El nombre es requerido</div>
+        </div>
+        <div class="field">
+          <label class="label">Apellidos</label><input class="input" formControlName="apellidos" />
+          <div *ngIf="form.get('apellidos')?.touched && form.get('apellidos')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">Los apellidos son requeridos</div>
+        </div>
+        <div class="field">
+          <label class="label">Documento de Identidad</label><input class="input"
+            formControlName="documentoIdentidad" />
+        </div>
+        <div class="field">
+          <label class="label">Fecha nacimiento</label><input class="input" type="date"
+            formControlName="fechaNacimiento" />
+          <div *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">La fecha de nacimiento es requerida</div>
+        </div>
+        <div class="field">
+          <label class="label">Sexo</label>
+          <select class="input" formControlName="sexo">
+            <option value="M">M</option>
+            <option value="F">F</option>
+            <option value="O">O</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Ciudad</label><input class="input" formControlName="ciudad" />
+        </div>
+        <div class="field">
+          <label class="label">Dirección</label><input class="input" formControlName="direccion" />
+        </div>
+        <div class="field">
+          <label class="label">Teléfono</label><input class="input" formControlName="numeroTelefono" />
+        </div>
       </div>
 
-      <form class="mt-4 space-y-6" [formGroup]="form" (ngSubmit)="submit()">
-        <section>
-          <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-500 mb-3">Datos del alumno</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="field">
-              <label class="label">Nombres</label><input class="input" formControlName="nombres" />
-              <div *ngIf="form.get('nombres')?.touched && form.get('nombres')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">El nombre es requerido</div>
-            </div>
-            <div class="field">
-              <label class="label">Apellidos</label><input class="input" formControlName="apellidos" />
-              <div *ngIf="form.get('apellidos')?.touched && form.get('apellidos')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">Los apellidos son requeridos</div>
-            </div>
-            <div class="field">
-              <label class="label">Documento de Identidad</label><input class="input"
-                formControlName="documentoIdentidad" />
-            </div>
-            <div class="field">
-              <label class="label">Fecha nacimiento</label><input class="input" type="date"
-                formControlName="fechaNacimiento" />
-              <div *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">La fecha de nacimiento es requerida</div>
-            </div>
-            <div class="field">
-              <label class="label">Sexo</label>
-              <select class="input" formControlName="sexo">
-                <option value="M">M</option>
-                <option value="F">F</option>
-                <option value="O">O</option>
-              </select>
-            </div>
-            <div class="field">
-              <label class="label">Ciudad</label><input class="input" formControlName="ciudad" />
-            </div>
-            <div class="field">
-              <label class="label">Dirección</label><input class="input" formControlName="direccion" />
-            </div>
-            <div class="field">
-              <label class="label">Teléfono</label><input class="input" formControlName="numeroTelefono" />
-            </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+        <div class="field">
+          <label class="label">Email acceso</label><input class="input" formControlName="alumnoEmail" />
+          <div *ngIf="form.get('alumnoEmail')?.touched && form.get('alumnoEmail')?.errors"
+            class="text-sm text-red-600 mt-1">
+            <span *ngIf="form.get('alumnoEmail')?.errors?.['required']">Email es requerido.</span>
+            <span *ngIf="form.get('alumnoEmail')?.errors?.['email']">Email no es válido.</span>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-            <div class="field">
-              <label class="label">Email acceso</label><input class="input" formControlName="alumnoEmail" />
-              <div *ngIf="form.get('alumnoEmail')?.touched && form.get('alumnoEmail')?.errors"
-                class="text-sm text-red-600 mt-1">
-                <span *ngIf="form.get('alumnoEmail')?.errors?.['required']">Email es requerido.</span>
-                <span *ngIf="form.get('alumnoEmail')?.errors?.['email']">Email no es válido.</span>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label><input class="input" type="password"
-                formControlName="alumnoPassword" />
-              <div *ngIf="form.get('alumnoPassword')?.touched && form.get('alumnoPassword')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">La contraseña es requerida</div>
-            </div>
-          </div>
-
-          <p *ngIf="esMenor()"
-            class="mt-3 text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm">
-            ⚠️ El alumno es menor de edad: se requerirá tutor.
-          </p>
-        </section>
-
-        <section *ngIf="esMenor()" [formGroup]="tutorForm">
-          <h4 class="text-sm font-semibold text-gray-700 mb-3">Datos del tutor</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div class="field">
-              <label class="label">Nombres</label><input class="input" formControlName="nombres" />
-              <div *ngIf="tutorForm.get('nombres')?.touched && tutorForm.get('nombres')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">El nombre del tutor es requerido</div>
-            </div>
-            <div class="field">
-              <label class="label">Apellidos</label><input class="input" formControlName="apellidos" />
-              <div *ngIf="tutorForm.get('apellidos')?.touched && tutorForm.get('apellidos')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">Los apellidos del tutor son requeridos</div>
-            </div>
-            <div class="field">
-              <label class="label">Documento</label><input class="input" formControlName="documentoIdentidad" />
-            </div>
-            <div class="field">
-              <label class="label">Fecha nacimiento</label><input class="input" type="date"
-                formControlName="fechaNacimiento" />
-              <div
-                *ngIf="tutorForm.get('fechaNacimiento')?.touched && tutorForm.get('fechaNacimiento')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">La fecha de nacimiento del tutor es requerida</div>
-            </div>
-            <div class="field">
-              <label class="label">Sexo</label>
-              <select class="input" formControlName="sexo">
-                <option value="M">M</option>
-                <option value="F">F</option>
-                <option value="O">O</option>
-              </select>
-            </div>
-            <div class="field">
-              <label class="label">Ciudad</label><input class="input" formControlName="ciudad" />
-            </div>
-            <div class="field">
-              <label class="label">Dirección</label><input class="input" formControlName="direccion" />
-            </div>
-            <div class="field">
-              <label class="label">Teléfono</label><input class="input" formControlName="numeroTelefono" />
-            </div>
-            <div class="field">
-              <label class="label">Email acceso</label><input class="input" formControlName="email" />
-              <div *ngIf="tutorForm.get('email')?.touched && tutorForm.get('email')?.errors"
-                class="text-sm text-red-600 mt-1">
-                <span *ngIf="tutorForm.get('email')?.errors?.['required']">Email es requerido.</span>
-                <span *ngIf="tutorForm.get('email')?.errors?.['email']">Email no es válido.</span>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label><input class="input" type="password" formControlName="password" />
-              <div *ngIf="tutorForm.get('password')?.touched && tutorForm.get('password')?.errors?.['required']"
-                class="text-sm text-red-600 mt-1">La contraseña del tutor es requerida</div>
-            </div>
-            <div class="field">
-              <label class="label">Parentesco</label><input class="input" formControlName="tipoParentesco"
-                placeholder="Madre/Padre/Tutor" />
-            </div>
-          </div>
-        </section>
-
-        <div class="flex items-center justify-end gap-2">
-          <button type="button" class="btn-outline" (click)="close(false)">Cancelar</button>
-          <button type="submit" class="btn" [disabled]="form.invalid || loading">{{ submitLabel }}</button>
         </div>
-        <p *ngIf="form.errors?.['tutorSameAsAlumno']" class="text-red-600 text-sm">El email del tutor no puede ser igual
-          al email del alumno.</p>
-        <p *ngIf="error" class="text-red-600 text-sm">{{ error }}</p>
-      </form>
+        <div class="field">
+          <label class="label">Password</label><input class="input" type="password" formControlName="alumnoPassword" />
+          <div *ngIf="form.get('alumnoPassword')?.touched && form.get('alumnoPassword')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">La contraseña es requerida</div>
+        </div>
+      </div>
+
+      <p *ngIf="esMenor()" class="mt-3 text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-sm">
+        ⚠️ El alumno es menor de edad: se requerirá tutor.
+      </p>
+    </section>
+
+    <section *ngIf="esMenor()" [formGroup]="tutorForm">
+      <h4 class="text-sm font-semibold text-gray-700 mb-3">Datos del tutor</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="field">
+          <label class="label">Nombres</label><input class="input" formControlName="nombres" />
+          <div *ngIf="tutorForm.get('nombres')?.touched && tutorForm.get('nombres')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">El nombre del tutor es requerido</div>
+        </div>
+        <div class="field">
+          <label class="label">Apellidos</label><input class="input" formControlName="apellidos" />
+          <div *ngIf="tutorForm.get('apellidos')?.touched && tutorForm.get('apellidos')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">Los apellidos del tutor son requeridos</div>
+        </div>
+        <div class="field">
+          <label class="label">Documento</label><input class="input" formControlName="documentoIdentidad" />
+        </div>
+        <div class="field">
+          <label class="label">Fecha nacimiento</label><input class="input" type="date"
+            formControlName="fechaNacimiento" />
+          <div
+            *ngIf="tutorForm.get('fechaNacimiento')?.touched && tutorForm.get('fechaNacimiento')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">La fecha de nacimiento del tutor es requerida</div>
+        </div>
+        <div class="field">
+          <label class="label">Sexo</label>
+          <select class="input" formControlName="sexo">
+            <option value="M">M</option>
+            <option value="F">F</option>
+            <option value="O">O</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Ciudad</label><input class="input" formControlName="ciudad" />
+        </div>
+        <div class="field">
+          <label class="label">Dirección</label><input class="input" formControlName="direccion" />
+        </div>
+        <div class="field">
+          <label class="label">Teléfono</label><input class="input" formControlName="numeroTelefono" />
+        </div>
+        <div class="field">
+          <label class="label">Email acceso</label><input class="input" formControlName="email" />
+          <div *ngIf="tutorForm.get('email')?.touched && tutorForm.get('email')?.errors"
+            class="text-sm text-red-600 mt-1">
+            <span *ngIf="tutorForm.get('email')?.errors?.['required']">Email es requerido.</span>
+            <span *ngIf="tutorForm.get('email')?.errors?.['email']">Email no es válido.</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Password</label><input class="input" type="password" formControlName="password" />
+          <div *ngIf="tutorForm.get('password')?.touched && tutorForm.get('password')?.errors?.['required']"
+            class="text-sm text-red-600 mt-1">La contraseña del tutor es requerida</div>
+        </div>
+        <div class="field">
+          <label class="label">Parentesco</label><input class="input" formControlName="tipoParentesco"
+            placeholder="Madre/Padre/Tutor" />
+        </div>
+      </div>
+    </section>
+
+    <div class="flex items-center justify-end gap-2">
+      <button type="button" class="btn-outline" (click)="close(false)">Cancelar</button>
+      <button type="submit" class="btn" [disabled]="form.invalid || loading">{{ submitLabel }}</button>
     </div>
-  </div>
-</div>
+    <p *ngIf="form.errors?.['tutorSameAsAlumno']" class="text-red-600 text-sm">El email del tutor no puede ser igual
+      al email del alumno.</p>
+    <p *ngIf="error" class="text-red-600 text-sm">{{ error }}</p>
+  </form>
+</app-modal>

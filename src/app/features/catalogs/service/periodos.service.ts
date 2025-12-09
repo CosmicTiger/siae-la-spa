@@ -1,14 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { ApiService } from '../../../core/api.service';
+import { map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PeriodosService {
-  http = inject(HttpClient);
-  base = `${environment.apiBase}/api/periodos`;
+  api = inject(ApiService);
+  base = '/api/periodos';
 
   list() {
-    return this.http.get<any[]>(this.base).pipe(map((r) => r || []));
+    return this.api.get<any[]>(this.base).pipe(map((r) => r || []));
   }
 }

@@ -1,10 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-
-import { environment } from '../../../../environments/environment';
+import { ApiService } from '../../../core/api.service';
 import { map } from 'rxjs';
 import {
-  ApiResponse,
   PaginationResult,
   AlumnoReadDto,
   AlumnoReadDetailDto,
@@ -14,51 +11,49 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class AlumnosService {
-  http = inject(HttpClient);
-  base = `${environment.apiBase}/api/alumnos`;
+  api = inject(ApiService);
+  base = '/api/alumnos';
 
   list(page = 1, pageSize = 10, search = '') {
-    let params = new HttpParams().set('page', page).set('pageSize', pageSize);
-    if (search) params = params.set('search', search);
-    return this.http
-      .get<ApiResponse<PaginationResult<AlumnoReadDto>>>(this.base, { params })
-      .pipe(map((r) => r.data!));
+    const params: Record<string, any> = { page, pageSize };
+    if (search) params['search'] = search;
+    return this.api.get<PaginationResult<AlumnoReadDto>>(this.base, params).pipe(map((r) => r!));
   }
 
   getById(id: number) {
-    return this.http.get<ApiResponse<AlumnoReadDetailDto>>(`${this.base}/${id}`).pipe(
-      map((r) => {
-        const d = r.data as any;
-        if (!d) return null;
+    return this.api.get<AlumnoReadDetailDto>(`${this.base}/${id}`).pipe(
+      map((d) => {
+        const r = d as any;
+        if (!r) return null;
 
         // If the backend already returned the detailed shape, trust it
-        if (d.alumnoId && d.persona) return d as AlumnoReadDetailDto;
+        if (r.alumnoId && r.persona) return r as AlumnoReadDetailDto;
 
         // Otherwise try to normalize the flat shape into the detailed form
-        const persona = d.persona ||
-          d.Persona ||
-          d.alumnoPersona || {
-            nombres: d.nombres,
-            apellidos: d.apellidos,
-            documentoIdentidad: d.documentoIdentidad ?? d.dni ?? null,
-            fechaNacimiento: d.fechaNacimiento ?? null,
-            sexo: d.sexo ?? d.genero ?? null,
-            ciudad: d.ciudad ?? null,
-            direccion: d.direccion ?? null,
-            email: d.email ?? null,
-            numeroTelefono: d.numeroTelefono ?? d.telefono ?? null,
+        const persona = r.persona ||
+          r.Persona ||
+          r.alumnoPersona || {
+            nombres: r.nombres,
+            apellidos: r.apellidos,
+            documentoIdentidad: r.documentoIdentidad ?? r.dni ?? null,
+            fechaNacimiento: r.fechaNacimiento ?? null,
+            sexo: r.sexo ?? r.genero ?? null,
+            ciudad: r.ciudad ?? null,
+            direccion: r.direccion ?? null,
+            email: r.email ?? null,
+            numeroTelefono: r.numeroTelefono ?? r.telefono ?? null,
           };
 
-        const matriculaActual = d.matriculaActual || d.matricula || null;
+        const matriculaActual = r.matriculaActual || r.matricula || null;
 
-        const tutor = d.tutor || d.apoderado || null;
+        const tutor = r.tutor || r.apoderado || null;
 
         const normalized: AlumnoReadDetailDto = {
-          alumnoId: d.alumnoId ?? d.id,
+          alumnoId: r.alumnoId ?? r.id,
           persona,
           matriculaActual,
           tutor,
-          activo: d.activo ?? true,
+          activo: r.activo ?? true,
         };
 
         return normalized;
@@ -67,15 +62,15 @@ export class AlumnosService {
   }
 
   create(payload: AlumnoCreateWithAccountsDto) {
-    return this.http.post<ApiResponse<AlumnoCreateResultDto>>(this.base, payload);
+    return this.api.post<AlumnoCreateResultDto>(this.base, payload);
   }
 
   update(id: number, payload: any) {
-    return this.http.put<ApiResponse<any>>(`${this.base}/${id}`, payload);
+    return this.api.put<any>(`${this.base}/${id}`, payload);
   }
 
   setActive(id: number, activo: boolean) {
     // PATCH with partial update for active flag
-    return this.http.patch<ApiResponse<any>>(`${this.base}/${id}`, { activo });
+    return this.api.patch<any>(`${this.base}/${id}`, { activo });
   }
 }
