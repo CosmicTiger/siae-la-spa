@@ -23,7 +23,7 @@ export interface PaginationResult<T> {
   items: T[];
 }
 
-export interface AlumnoReadDto {
+export interface PersonaReadDto {
   id: number;
   nombres: string;
   apellidos: string;
@@ -33,6 +33,10 @@ export interface AlumnoReadDto {
   direccion: string | null;
   activo: boolean;
 }
+
+export interface AlumnoReadDto extends PersonaReadDto {}
+
+export interface DocenteReadDto extends PersonaReadDto {}
 
 export interface QueryParams {
   page?: number;

@@ -29,6 +29,21 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'docentes',
+    canActivate: [canActivateAuth],
+    loadComponent: () =>
+      import('./features/docentes/pages/docentes.component').then((m) => m.DocentesComponent),
+    children: [
+      // {
+      //   path: ':id',
+      //   loadComponent: () =>
+      //     import('./features/docentes/components/docente-detail.component').then(
+      //       (m) => m.DocenteDetailComponent
+      //     ),
+      // },
+    ],
+  },
+  {
     path: 'matriculas',
     canActivate: [canActivateAuth],
     loadComponent: () =>

@@ -42,15 +42,22 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Configuraciones',
       items: [
-        { label: 'Parámetros', to: '/config/parametros' },
-        { label: 'Períodos', to: '/config/periodos' },
+        { label: 'Año Lectivo', to: '/config/anho_lectivo' },
+        { label: 'Crear Nivel Académico', to: '/config/nivel_academico' },
+        { label: 'Crear Grados y Secciones', to: '/config/grados_secciones' },
+        { label: 'Asignar Grados por Niveles', to: '/config/asignar_grados_niveles' },
+        { label: 'Asignar Cursos por Niveles', to: '/config/asignar_cursos_niveles' },
+        { label: 'Asignar Vacantes', to: '/config/asignar_vacantes' },
+        { label: 'Crear Horario', to: '/config/crear_horario' },
+        { label: 'Asignar Docentes a Cursos', to: '/config/asignar_docentes_cursos' },
       ],
     },
     {
       label: 'Usuarios',
       items: [
-        { label: 'Administradores', to: '/usuarios/admins' },
-        { label: 'Tutores', to: '/usuarios/tutores' },
+        { label: 'Crear usuario', to: '/usuarios/nuevo' },
+        { label: 'Listado de usuario', to: '/usuarios' },
+        { label: 'Asignar roles', to: '/usuarios/asignar_roles' },
       ],
     },
     {
@@ -66,22 +73,26 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Docentes',
       items: [
-        { label: 'Listado', to: '/docentes' },
-        { label: 'Jefes de Área', to: '/docentes/jefes' },
+        { label: 'Crear Docente', to: '/docentes/nuevo' },
+        { label: 'Agregar Currícula', to: '/docentes/curricula/nueva' },
+        { label: 'Agregar Calificación', to: '/docentes/calificaciones/nueva' },
+        { label: 'Listado de Docentes', to: '/docentes' },
+        { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
+        { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
       ],
     },
     { label: 'Cursos', items: [{ label: 'Asignaturas', to: '/cursos' }] },
     {
       label: 'Matrícula',
       items: [
-        { label: 'Nueva', to: '/matriculas/nueva' },
-        { label: 'Histórico', to: '/matriculas' },
+        { label: 'Crear matrícula', to: '/matriculas/nueva' },
+        { label: 'Historial Matrículas', to: '/matriculas' },
       ],
     },
   ];
 
   tiles: Tile[] = [
-    { title: 'Configuración', icon: '🛠️', to: '/config/parametros', cta: 'Ver Configuración' },
+    { title: 'Configuración', icon: '🛠️', to: '/config', cta: 'Ver Configuración' },
     { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
     { title: 'Alumno', icon: '🎓', to: '/alumnos', cta: 'Ver Alumno' },
     { title: 'Docente', icon: '🧑‍🏫', to: '/docentes', cta: 'Ver Docente' },
