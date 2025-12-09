@@ -54,40 +54,26 @@ export class NavbarComponent implements OnInit {
     },
     {
       label: 'Usuarios',
-      items: [
-        { label: 'Crear usuario', to: '/usuarios/nuevo' },
-        { label: 'Listado de usuario', to: '/usuarios' },
-        { label: 'Asignar roles', to: '/usuarios/asignar_roles' },
-      ],
+      items: [{ label: 'Listado de usuario', to: '/usuarios' }],
     },
     {
       label: 'Alumnos',
-      items: [
-        { label: 'Listado', to: '/alumnos' },
-        {
-          label: 'Matrículas',
-          to: '/alumnos/matriculas',
-        },
-      ],
+      items: [{ label: 'Listado de Alumnos', to: '/alumnos' }],
     },
     {
       label: 'Docentes',
       items: [
-        { label: 'Crear Docente', to: '/docentes/nuevo' },
+        { label: 'Listado de Docentes', to: '/docentes' },
         { label: 'Agregar Currícula', to: '/docentes/curricula/nueva' },
         { label: 'Agregar Calificación', to: '/docentes/calificaciones/nueva' },
-        { label: 'Listado de Docentes', to: '/docentes' },
         { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
         { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
       ],
     },
-    { label: 'Cursos', items: [{ label: 'Asignaturas', to: '/cursos' }] },
+    { label: 'Cursos', items: [{ label: 'Listado de Cursos', to: '/cursos' }] },
     {
       label: 'Matrícula',
-      items: [
-        { label: 'Crear matrícula', to: '/matriculas/nueva' },
-        { label: 'Historial Matrículas', to: '/matriculas' },
-      ],
+      items: [{ label: 'Historial Matrículas', to: '/matriculas' }],
     },
   ];
 
