@@ -89,63 +89,63 @@ export const routes: Routes = [
       {
         path: 'periodos',
         loadComponent: () =>
-          import('./features/catalogs/periodos/pages/periodo-list.component').then(
+          import('./features/catalogos/periodos/pages/periodo-list.component').then(
             (m) => m.PeriodoListComponent
           ),
       },
       {
         path: 'periodos/nuevo',
         loadComponent: () =>
-          import('./features/catalogs/periodos/components/periodo-form.component').then(
+          import('./features/catalogos/periodos/components/periodo-form.component').then(
             (m) => m.PeriodoFormComponent
           ),
       },
       {
         path: 'niveles',
         loadComponent: () =>
-          import('./features/catalogs/niveles/pages/nivel-list.component').then(
+          import('./features/catalogos/niveles/pages/nivel-list.component').then(
             (m) => m.NivelListComponent
           ),
       },
       {
         path: 'niveles/nuevo',
         loadComponent: () =>
-          import('./features/catalogs/niveles/components/nivel-form.component').then(
+          import('./features/catalogos/niveles/components/nivel-form.component').then(
             (m) => m.NivelFormComponent
           ),
       },
       {
         path: 'grado_seccion',
         loadComponent: () =>
-          import('./features/catalogs/grado-seccion/pages/grado-seccion-list.component').then(
+          import('./features/catalogos/grado-seccion/pages/grado-seccion-list.component').then(
             (m) => m.GradoSeccionListComponent
           ),
       },
       {
         path: 'cursos',
         loadComponent: () =>
-          import('./features/catalogs/cursos/pages/curso-list.component').then(
-            (m) => m.CursoListComponent
+          import('./features/catalogos/cursos/pages/cursos.component').then(
+            (m) => m.CursosComponent
           ),
       },
       {
         path: 'cursos/nuevo',
         loadComponent: () =>
-          import('./features/catalogs/cursos/components/curso-form.component').then(
+          import('./features/catalogos/cursos/components/curso-form.component').then(
             (m) => m.CursoFormComponent
           ),
       },
       {
         path: 'horarios',
         loadComponent: () =>
-          import('./features/catalogs/horario/pages/horario-list.component').then(
+          import('./features/catalogos/horario/pages/horario-list.component').then(
             (m) => m.HorarioListComponent
           ),
       },
       {
         path: 'horarios/nuevo',
         loadComponent: () =>
-          import('./features/catalogs/horario/components/horario-form.component').then(
+          import('./features/catalogos/horario/components/horario-form.component').then(
             (m) => m.HorarioFormComponent
           ),
       },

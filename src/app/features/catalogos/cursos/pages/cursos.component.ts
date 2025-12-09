@@ -1,54 +1,54 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { DocentesService } from '../service/docentes.service';
+import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { DocenteReadDto } from '@app/core/models/persona.model';
-import { DocenteDialogComponent } from '../components/docente-dialog.component';
 import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
+import { CursoFormComponent } from '../components/curso-form.component';
+import { Router, RouterModule } from '@angular/router';
+import { CursoService } from '../service/curso.service';
+import { CursoReadDto, CursoUpsertDto } from '@app/core/models/cursos.model';
 
 @Component({
   standalone: true,
-  selector: 'app-docentes',
+  selector: 'app-cursos',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    DocenteDialogComponent,
     DataTableComponent,
+    CursoFormComponent,
   ],
-  templateUrl: './docentes.component.html',
+  templateUrl: './cursos.component.html',
 })
-export class DocentesComponent {
-  svc = inject(DocentesService);
+export class CursosComponent implements OnInit {
+  private svc = inject(CursoService);
   private router = inject(Router);
 
   search = new FormControl('', { nonNullable: true });
   page = signal(1);
   pageSize = signal(10);
-
   totalItems = signal(0);
-  items = signal<DocenteReadDto[]>([]);
+  items = signal<CursoReadDto[]>([]);
+  // dialog state for create/edit
+  dialogOpen = signal(false);
+  dialogInitial = signal<CursoReadDto | number | null>(null);
 
   totalPages = computed(() => Math.max(1, Math.ceil(this.totalItems() / this.pageSize())));
 
-  // dialog state for create/edit
-  dialogOpen = signal(false);
-  dialogInitial = signal<DocenteReadDto | number | null>(null);
-
   columns = [
-    { key: 'fullName', label: 'Nombre' },
-    { key: 'documentoIdentidad', label: 'Documento' },
-    { key: 'ciudad', label: 'Ciudad' },
-    { key: 'direccion', label: 'Dirección' },
+    { key: 'codigo', label: 'Código' },
+    { key: 'descripcion', label: 'Descripción' },
+    { key: 'activo', label: 'Activo' },
+    { key: 'fechaRegistro', label: 'Fecha de Registro' },
   ];
 
-  constructor() {
-    this.search.valueChanges.subscribe(() => {
-      this.page.set(1);
-      this.load();
-    });
+  ngOnInit(): void {
+    this.search.valueChanges
+      .subscribe(() => {
+        this.page.set(1);
+        this.load();
+      })
+      .unsubscribe();
+
     this.load();
   }
 
@@ -64,7 +64,7 @@ export class DocentesComponent {
     this.dialogOpen.set(true);
   }
 
-  openEdit(item: DocenteReadDto) {
+  openEdit(item: CursoReadDto) {
     // pass the id (or the object) — dialog accepts both
     this.dialogInitial.set(item);
     this.dialogOpen.set(true);
@@ -76,14 +76,14 @@ export class DocentesComponent {
     if (ok) this.load();
   }
 
-  openView(item: DocenteReadDto | number | any) {
-    const id = (item && (item.id ?? (item as any).docenteId)) ?? item;
+  openView(item: CursoReadDto | number | any) {
+    const id = (item && (item.id ?? (item as any).cursoId)) ?? item;
     if (!id) return;
-    this.router.navigate(['/docentes', id]).catch(() => {});
+    this.router.navigate(['/cursos', id]).catch(() => {});
   }
 
-  toggleActive(item: DocenteReadDto) {
-    const id = item.id || (item as any).docenteId;
+  toggleActive(item: CursoUpsertDto & { id: number }) {
+    const id = item.id || (item as any).id;
     if (!id) return;
     this.svc.setActive(id, !item.activo).subscribe({
       next: () => this.load(),

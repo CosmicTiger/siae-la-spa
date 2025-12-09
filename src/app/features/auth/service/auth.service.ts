@@ -1,9 +1,9 @@
 import { Injectable, computed, inject, signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiResponse, AuthResponse, LoginDto } from '../../../core/models';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, catchError, map, of } from 'rxjs';
 import { ApiService } from '../../../core/api.service';
+import { AuthResponse, LoginDto } from '@app/core/models/auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

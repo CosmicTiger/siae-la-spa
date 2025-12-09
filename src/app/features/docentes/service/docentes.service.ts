@@ -5,11 +5,11 @@ import { ApiService } from '../../../core/api.service';
 import {
   PersonaResumenDto,
   PersonaReadDto,
-  PaginationResult,
   DocenteReadDto,
   DocenteCreateWithAccountsDto,
   DocenteCreateResultDto,
-} from '../../../core/models';
+} from '../../../core/models/persona.model';
+import { PaginationResult } from '@app/core/interface/pagination.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DocentesService {

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
-import { LoginDto } from '../../../core/models';
 import { BehaviorSubject } from 'rxjs';
+import { LoginDto } from '@app/core/models/auth.model';
 
 @Component({
   standalone: true,

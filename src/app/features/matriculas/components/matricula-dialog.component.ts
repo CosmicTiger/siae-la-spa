@@ -13,10 +13,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormsModule } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { MatriculasService } from '../service/matriculas.service';
-import { MatriculaCreateDto } from '../../../core/models';
+import { MatriculaCreateDto } from '../../../core/models/persona.model';
 import { AlumnosService } from '../../alumnos/service/alumnos.service';
-import { NivelesService } from '../../catalogs/niveles/service/niveles.service';
-import { PeriodosService } from '../../catalogs/periodos/service/periodos.service';
+import { NivelesService } from '../../catalogos/niveles/service/niveles.service';
+import { PeriodosService } from '../../catalogos/periodos/service/periodos.service';
 
 @Component({
   standalone: true,

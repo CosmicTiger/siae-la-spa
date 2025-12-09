@@ -2,12 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../core/api.service';
 import { map } from 'rxjs';
 import {
-  PaginationResult,
   AlumnoReadDto,
   AlumnoReadDetailDto,
   AlumnoCreateWithAccountsDto,
   AlumnoCreateResultDto,
-} from '../../../core/models';
+} from '../../../core/models/persona.model';
+import { PaginationResult } from '@app/core/interface/pagination.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AlumnosService {
@@ -70,7 +70,9 @@ export class AlumnosService {
   }
 
   setActive(id: number, activo: boolean) {
-    // PATCH with partial update for active flag
-    return this.api.patch<any>(`${this.base}/${id}`, { activo });
+    // // PATCH with partial update for active flag
+    // return this.api.patch<any>(`${this.base}/${id}`, { activo });
+
+    return this.update(id, { activo });
   }
 }

@@ -11,8 +11,8 @@ import {
   EntityDialogComponent,
   FieldDef,
 } from '@app/shared/components/entity-dialog/entity-dialog.component';
-import { NivelesService } from '../../catalogs/niveles/service/niveles.service';
-import { PeriodosService } from '../../catalogs/periodos/service/periodos.service';
+import { NivelesService } from '../../catalogos/niveles/service/niveles.service';
+import { PeriodosService } from '../../catalogos/periodos/service/periodos.service';
 import { Validators } from '@angular/forms';
 
 @Component({

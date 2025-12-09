@@ -1,0 +1,17 @@
+<div class="p-4">
+  <h2 class="text-2xl font-bold">Cursos</h2>
+  <p class="mt-2 text-sm text-gray-600">Gestión de cursos.</p>
+</div>
+
+<app-data-table [searchControl]="search" [searchPlaceholder]="'Buscar cursos...'" [items]="items()" [columns]="columns"
+  [page]="page()" [totalPages]="totalPages()" [viewLinkKey]="'id'" [newLabel]="'Nuevo curso'" (create)="openCreate()"
+  (view)="openView($event)" (edit)="openEdit($event)" (toggleActive)="toggleActive($event)" (prev)="prev()"
+  (next)="next()"></app-data-table>
+
+<!-- Dialog for create / edit -->
+<app-curso-dialog [open]="dialogOpen()" [initial]="dialogInitial()" (openChange)="dialogOpen.set($event)"
+  (closed)="onDialogClosed($event)">
+</app-curso-dialog>
+
+<!-- Nested route outlet for detail modal -->
+<router-outlet></router-outlet>

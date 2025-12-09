@@ -7,7 +7,7 @@ export class CursoService {
   private api = inject(ApiService);
   private base = '/api/cursos';
 
-  listar(page = 1, pageSize = 50, filter?: any) {
+  list(page = 1, pageSize = 50, filter?: any) {
     const params: Record<string, any> = { page, pageSize };
     if (filter) Object.keys(filter).forEach((k) => (params[k] = filter[k]));
     return this.api.get<any>(this.base, params).pipe(map((r) => r));
@@ -25,7 +25,8 @@ export class CursoService {
     return this.api.put<any>(`${this.base}/${id}`, payload);
   }
 
-  delete(id: number) {
-    return this.api.delete<any>(`${this.base}/${id}`);
+  setActive(id: number, active: boolean) {
+    // return this.api.delete<any>(`${this.base}/${id}`);
+    return this.update(id, { activo: active });
   }
 }
