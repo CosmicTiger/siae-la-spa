@@ -8,6 +8,8 @@ import {
   DocenteReadDto,
   DocenteCreateWithAccountsDto,
   DocenteCreateResultDto,
+  DocenteAsignacionDto,
+  DocenteCursoDto,
 } from '../../../core/models/persona.model';
 import { PaginationResult } from '@app/core/interface/pagination.interface';
 
@@ -37,11 +39,17 @@ export class DocentesService {
     return this.api.put<DocenteReadDto>(`${this.base}/${id}`, payload);
   }
 
-  setActive(id: number, activo: boolean, docente: any): Observable<DocenteReadDto |null> {
-     const payload: any = {
+  setActive(id: number, activo: boolean, docente: any): Observable<DocenteReadDto | null> {
+    const payload: any = {
       ...docente,
       activo: activo,
     };
     return this.update(id, payload);
+  }
+
+  asignarDocenteACurso(payload: DocenteAsignacionDto[]) {
+    return this.api
+      .post<any>(`${this.base}/asignacion`, payload)
+      .pipe(map((r) => r.data as DocenteCursoDto[]));
   }
 }

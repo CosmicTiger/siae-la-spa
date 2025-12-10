@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth } from '@features/auth/guards/auth.guard';
 import { AsignarCursoComponent } from './features/catalogos/cursos/components/asignar-curso/asignar-curso.component';
+import { AsignarDocenteComponent } from './features/docentes/pages/asignar-docente/asignar-docente.component';
 
 export const routes: Routes = [
   {
@@ -57,6 +58,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/docentes/pages/curricula/curricula.component').then(
         (m) => m.CurriculaComponent
+      ),
+  },
+  {
+    path: 'asignar-docente',
+    loadComponent: () =>
+      import('./features/docentes/pages/asignar-docente/asignar-docente.component').then(
+        (m) => m.AsignarDocenteComponent
       ),
   },
   {

@@ -53,6 +53,10 @@ export class NivelService {
       .pipe(map((r) => r));
   }
 
+  getCursosPorNivelDetalle() {
+    return this.api.get<any[]>(`/api/niveles/cursos`);
+  }
+
   createNivelDetalle(payload: NivelDetalleCreateDto) {
     return this.api.post<any>(`${this.base}/detalle`, payload);
   }

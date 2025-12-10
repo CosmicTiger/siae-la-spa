@@ -200,3 +200,10 @@ export interface AlumnoReadDetailDto {
   tutor?: TutorResumenDto | null;
   activo: boolean;
 }
+
+export interface DocenteAsignacionDto {
+  docenteId: number;
+  nivelDetalleCursoId: number;
+  activo: boolean;
+  propertyName?: string;
+}

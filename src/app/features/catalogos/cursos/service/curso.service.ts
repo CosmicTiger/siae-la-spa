@@ -11,6 +11,7 @@ export interface AsignarCursoPayload {
 export class CursoService {
   private api = inject(ApiService);
   private base = '/api/cursos';
+  private baseNiveles = '/api/niveles';
 
   list(page = 1, pageSize = 50, filter?: any) {
     const params: Record<string, any> = { page, pageSize };
@@ -40,6 +41,6 @@ export class CursoService {
   }
 
   asignarCursoANivel(nivelId: number, payload: AsignarCursoPayload) {
-    return this.api.post<any>(`${this.base}/nivel/${nivelId}/cursos`, payload).pipe(map((r) => r));
+    return this.api.post<any>(`${this.baseNiveles}/${nivelId}/cursos`, payload).pipe(map((r) => r));
   }
 }

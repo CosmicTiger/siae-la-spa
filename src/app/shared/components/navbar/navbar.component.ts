@@ -75,6 +75,7 @@ export class NavbarComponent implements OnInit {
       items: [
         { label: 'Listado de Cursos', to: '/catalogos/cursos' },
         { label: 'Asignar Cursos', to: '/cursos/asignar' },
+        { label: 'Asignar Docente', to: '/asignar-docente' },
       ],
     },
     {
