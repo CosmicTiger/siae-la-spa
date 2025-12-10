@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth } from '@features/auth/guards/auth.guard';
+import { AsignarCursoComponent } from './features/catalogos/cursos/components/asignar-curso/asignar-curso.component';
 
 export const routes: Routes = [
   {
@@ -159,6 +160,13 @@ export const routes: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: 'cursos/asignar',
+    loadComponent: () =>
+      import('./features/catalogos/cursos/components/asignar-curso/asignar-curso.component').then(
+        (m) => m.AsignarCursoComponent
+      ),
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: '**', redirectTo: 'home' },

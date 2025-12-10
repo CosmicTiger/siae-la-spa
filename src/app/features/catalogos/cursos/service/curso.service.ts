@@ -2,6 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../../core/api.service';
 import { map } from 'rxjs/operators';
 
+export interface AsignarCursoPayload {
+  nivelDetalleId: number;
+  cursoId: number;
+  activo: boolean;
+}
 @Injectable({ providedIn: 'root' })
 export class CursoService {
   private api = inject(ApiService);
@@ -32,5 +37,9 @@ export class CursoService {
     };
 
     return this.update(id, payload);
+  }
+
+  asignarCursoANivel(nivelId: number, payload: AsignarCursoPayload) {
+    return this.api.post<any>(`${this.base}/nivel/${nivelId}/cursos`, payload).pipe(map((r) => r));
   }
 }

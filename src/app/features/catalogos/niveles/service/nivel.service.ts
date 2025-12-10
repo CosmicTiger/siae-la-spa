@@ -2,6 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../../core/api.service';
 import { map } from 'rxjs/operators';
 
+export interface NivelDetalleResumenDto {
+  nivelDetalleId: number;
+  nivelId: number;
+  nivelDescripcion: string;
+  turno: string;
+  gradoSeccionId: number;
+  gradoDescripcion: string;
+  seccionDescripcion: string;
+}
 @Injectable({ providedIn: 'root' })
 export class NivelService {
   private api = inject(ApiService);
@@ -27,5 +36,21 @@ export class NivelService {
 
   delete(id: number) {
     return this.api.delete<any>(`${this.base}/${id}`);
+  }
+
+  getNivelesDetalle(nivelId: number | null = null) {
+    const params: any = {};
+    if (nivelId) params.nivelId = nivelId;
+
+    return this.api
+      .get<NivelDetalleResumenDto[]>(`${this.base}/detalle`, params)
+      .pipe(map((r) => r));
+  }
+
+  asignarCursoANivel(
+    nivelId: number,
+    payload: { nivelDetalleId: number; cursoId: number; activo: boolean }
+  ) {
+    return this.api.post<any>(`${this.base}/${nivelId}/cursos`, payload);
   }
 }

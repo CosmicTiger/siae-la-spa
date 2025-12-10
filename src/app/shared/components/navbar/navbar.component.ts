@@ -70,7 +70,13 @@ export class NavbarComponent implements OnInit {
         { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
       ],
     },
-    { label: 'Cursos', items: [{ label: 'Listado de Cursos', to: '/catalogos/cursos' }] },
+    {
+      label: 'Cursos',
+      items: [
+        { label: 'Listado de Cursos', to: '/catalogos/cursos' },
+        { label: 'Asignar Cursos', to: '/cursos/asignar' },
+      ],
+    },
     {
       label: 'Matrícula',
       items: [{ label: 'Historial Matrículas', to: '/matriculas' }],
