@@ -52,6 +52,13 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'curriculas',
+    loadComponent: () =>
+      import('./features/docentes/pages/curricula/curricula.component').then(
+        (m) => m.CurriculaComponent
+      ),
+  },
+  {
     path: 'matriculas',
     canActivate: [canActivateAuth],
     loadComponent: () =>

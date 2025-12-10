@@ -64,7 +64,7 @@ export class NavbarComponent implements OnInit {
       label: 'Docentes',
       items: [
         { label: 'Listado de Docentes', to: '/docentes' },
-        { label: 'Agregar Currícula', to: '/docentes/curricula/nueva' },
+        { label: 'Agregar Currícula', to: '/curriculas' },
         { label: 'Agregar Calificación', to: '/docentes/calificaciones/nueva' },
         { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
         { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },

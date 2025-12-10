@@ -64,7 +64,6 @@ export class CurriculaComponent {
     if (!docente) return;
 
     this.loadingAsignaciones.set(true);
-    this.asignaciones.set([]);
     this.curriculasPorAsignacion.set({});
 
     this.curriculaSvc
@@ -81,12 +80,10 @@ export class CurriculaComponent {
       )
       .subscribe({
         next: (r) => {
-          console.log('Asignados =>', r);
-          const items = r.items ?? [];
+          const items = r?.items ?? [];
           this.asignaciones.set(items);
-          this.totalItems.set(r.totalItems ?? items.length);
+          this.totalItems.set(r?.totalItems ?? items.length);
 
-          // cargar currículas de cada asig
           items.forEach((a) => this.loadCurriculasAsignacion(a.id));
         },
         error: (err) => {
