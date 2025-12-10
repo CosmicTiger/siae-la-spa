@@ -6,7 +6,6 @@ import {
   CurriculaCreateDto,
   CurriculaDto,
 } from '@app/core/models/persona.model';
-import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CurriculaService {
@@ -15,13 +14,11 @@ export class CurriculaService {
 
   // POST api/docentes/asignacion
   guardarAsignaciones(payload: DocenteAsignacionDto[]) {
-    return this.api
-      .post<any>(`${this.base}/asignacion`, payload)
-      .pipe(map((r) => r.data as DocenteCursoDto[]));
+    // ApiService ya regresa el .data tipado
+    return this.api.post<DocenteCursoDto[]>(`${this.base}/asignacion`, payload);
   }
 
   // GET api/docentes/asignados
-  // src/app/features/docentes/service/curricula.service.ts
   getAsignados(params: {
     page?: number;
     pageSize?: number;
@@ -32,36 +29,30 @@ export class CurriculaService {
     search?: string;
     list?: 'ACTIVE' | 'ALL';
   }) {
-    return this.api.get<any>(`${this.base}/asignados`, params).pipe(
-      // ApiService YA devuelve el `.data`, así que aquí ya es el PaginationResult<DocenteCursoDto>
-      map(
-        (r) =>
-          r as {
-            page: number;
-            pageSize: number;
-            totalItems: number;
-            items: DocenteCursoDto[];
-          }
-      )
-    );
+    // Aquí data YA es el PaginationResult<DocenteCursoDto>
+    return this.api.get<{
+      page: number;
+      pageSize: number;
+      totalItems: number;
+      items: DocenteCursoDto[];
+    }>(`${this.base}/asignados`, params);
   }
 
   // GET api/docentes/curriculas?docenteNivelDetalleCursoId=123
   getCurriculas(docenteNivelDetalleCursoId: number) {
-    return this.api
-      .get<any>(`${this.base}/curriculas`, { docenteNivelDetalleCursoId })
-      .pipe(map((r) => r.data as CurriculaDto[]));
+    // ApiService te entrega directamente CurriculaDto[]
+    return this.api.get<CurriculaDto[]>(`${this.base}/curriculas`, {
+      docenteNivelDetalleCursoId,
+    });
   }
 
   // POST api/docentes/curricula
   createCurricula(dto: CurriculaCreateDto) {
-    return this.api
-      .post<any>(`${this.base}/curricula`, dto)
-      .pipe(map((r) => r.data as CurriculaDto));
+    return this.api.post<CurriculaDto>(`${this.base}/curricula`, dto);
   }
 
   // DELETE api/docentes/curricula/{id}
   deleteCurricula(id: number) {
-    return this.api.delete<any>(`${this.base}/curricula/${id}`).pipe(map((r) => r.data as string));
+    return this.api.delete<string>(`${this.base}/curricula/${id}`);
   }
 }

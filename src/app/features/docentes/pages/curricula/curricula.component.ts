@@ -40,6 +40,10 @@ export class CurriculaComponent {
   loadingCurriculas = signal(false);
   saving = signal(false);
 
+  modalAbierto = signal(false);
+  asignacionSeleccionada = signal<DocenteCursoDto | null>(null);
+  descripcionCurricula = new FormControl('', { nonNullable: true });
+
   constructor() {
     // búsqueda docentes
     this.searchDocente.valueChanges.subscribe((value) => {
@@ -92,15 +96,16 @@ export class CurriculaComponent {
       });
   }
 
-  loadCurriculasAsignacion(docenteNivelDetalleCursoId: number) {
+  loadCurriculasAsignacion(id: number) {
     this.loadingCurriculas.set(true);
     this.curriculaSvc
-      .getCurriculas(docenteNivelDetalleCursoId)
+      .getCurriculas(id)
       .pipe(finalize(() => this.loadingCurriculas.set(false)))
       .subscribe({
         next: (list) => {
+          const activos = (list ?? []).filter((c) => c.activo); // 👈
           const current = { ...this.curriculasPorAsignacion() };
-          current[docenteNivelDetalleCursoId] = list ?? [];
+          current[id] = activos;
           this.curriculasPorAsignacion.set(current);
         },
         error: (err) => {
@@ -109,11 +114,30 @@ export class CurriculaComponent {
       });
   }
 
-  crearCurricula(asignacion: DocenteCursoDto) {
-    const descripcion = prompt(
-      `Descripción de la currícula para ${asignacion.cursoDescripcion} (${asignacion.gradoDescripcion})`
-    );
-    if (!descripcion) return;
+  abrirModalCurricula(asignacion: DocenteCursoDto) {
+    console.log('Click agregar currícula', asignacion);
+
+    this.asignacionSeleccionada.set(asignacion);
+
+    this.descripcionCurricula.setValue('');
+
+    this.modalAbierto.set(true);
+  }
+
+  cerrarModal() {
+    this.modalAbierto.set(false);
+    this.asignacionSeleccionada.set(null);
+  }
+
+  guardarCurriculaDesdeModal() {
+    const asignacion = this.asignacionSeleccionada();
+    if (!asignacion) return;
+
+    const descripcion = this.descripcionCurricula.value.trim();
+    if (!descripcion) {
+      // podrías poner un pequeño mensaje si quieres
+      return;
+    }
 
     const dto: CurriculaCreateDto = {
       docenteNivelDetalleCursoId: asignacion.id,
@@ -126,24 +150,29 @@ export class CurriculaComponent {
       .pipe(finalize(() => this.saving.set(false)))
       .subscribe({
         next: () => {
+          // recarga currículas para esa asignación
           this.loadCurriculasAsignacion(asignacion.id);
+          this.cerrarModal();
         },
         error: (err) => {
           console.error('Error creando currícula', err);
         },
       });
   }
-
-  eliminarCurricula(c: CurriculaDto) {
-    if (!confirm('¿Eliminar currícula?')) return;
-    this.curriculaSvc.deleteCurricula(c.id).subscribe(() => {
-      const map = { ...this.curriculasPorAsignacion() };
-      const list = map[c.docenteNivelDetalleCursoId] || [];
-      map[c.docenteNivelDetalleCursoId] = list.filter((x) => x.id !== c.id);
-      this.curriculasPorAsignacion.set(map);
-    });
+  eliminarCurricula(asignacionId: number, c: CurriculaDto) {
+    this.saving.set(true);
+    this.curriculaSvc
+      .deleteCurricula(c.id)
+      .pipe(finalize(() => this.saving.set(false)))
+      .subscribe({
+        next: () => {
+          this.loadCurriculasAsignacion(asignacionId);
+        },
+        error: (err) => {
+          console.error('Error eliminando currícula', err);
+        },
+      });
   }
-
   prev() {
     if (this.page() > 1) {
       this.page.update((p) => p - 1);

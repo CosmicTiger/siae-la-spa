@@ -7,9 +7,7 @@
   <!-- Selección de docente -->
   <div class="flex flex-wrap items-end gap-3">
     <div>
-      <label class="block text-xs font-semibold text-gray-600 mb-1">
-        Docente
-      </label>
+      <label class="block text-xs font-semibold text-gray-600 mb-1"> Docente </label>
       <select
         class="input min-w-[220px]"
         [formControl]="docenteControl"
@@ -26,30 +24,20 @@
   <!-- Asignaciones -->
   <div *ngIf="docenteControl.value as doc">
     <div class="flex items-center justify-between mt-4 mb-2">
-      <h3 class="font-semibold">
-        Asignaciones de {{ doc.nombres }} {{ doc.apellidos }}
-      </h3>
-      <span class="text-xs text-gray-500">
-        Página {{ page() }} / {{ totalPages() }}
-      </span>
+      <h3 class="font-semibold">Asignaciones de {{ doc.nombres }} {{ doc.apellidos }}</h3>
+      <span class="text-xs text-gray-500"> Página {{ page() }} / {{ totalPages() }} </span>
     </div>
 
     <!-- Loading -->
     <div *ngIf="loadingAsignaciones()">Cargando asignaciones…</div>
 
     <!-- Sin asignaciones -->
-    <div
-      *ngIf="!loadingAsignaciones() && !asignaciones().length"
-      class="text-sm text-gray-500"
-    >
+    <div *ngIf="!loadingAsignaciones() && !asignaciones().length" class="text-sm text-gray-500">
       Este docente aún no tiene asignaciones de curso/ sección.
     </div>
 
     <!-- Lista de asignaciones -->
-    <div
-      class="border rounded-lg divide-y"
-      *ngIf="!loadingAsignaciones() && asignaciones().length"
-    >
+    <div class="border rounded-lg divide-y" *ngIf="!loadingAsignaciones() && asignaciones().length">
       <div
         class="p-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
         *ngFor="let a of asignaciones()"
@@ -67,15 +55,13 @@
           <button
             class="btn btn-sm"
             type="button"
-            (click)="crearCurricula(a)"
+            (click)="abrirModalCurricula(a)"
             [disabled]="saving()"
           >
             + Agregar Currícula
           </button>
 
-          <div class="text-xs text-gray-500">
-            Currículas:
-          </div>
+          <div class="text-xs text-gray-500">Currículas:</div>
           <ul class="text-xs list-disc pl-4">
             <li
               *ngFor="let c of curriculasPorAsignacion()[a.id] || []"
@@ -85,29 +71,58 @@
               <button
                 type="button"
                 class="text-red-600 hover:underline"
-                (click)="eliminarCurricula(c)"
+                (click)="eliminarCurricula(a.id, c)"
               >
                 Eliminar
               </button>
             </li>
-            <li *ngIf="!(curriculasPorAsignacion()[a.id]?.length)">
-              (Sin currículas)
-            </li>
+            <li *ngIf="!curriculasPorAsignacion()[a.id]?.length">(Sin currículas)</li>
           </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Crear Currícula -->
+    <div
+      *ngIf="modalAbierto()"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+    >
+      <div class="bg-base-100 rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
+        <h3 class="text-lg font-semibold mb-2">Nueva currícula</h3>
+
+        <p class="text-sm text-gray-500 mb-2" *ngIf="asignacionSeleccionada() as a">
+          Para el curso:
+          <span class="font-medium"> {{ a.cursoDescripcion }} – {{ a.gradoDescripcion }} </span>
+        </p>
+
+        <label class="block text-xs font-semibold text-gray-600 mb-1"> Descripción </label>
+        <textarea
+          class="textarea textarea-bordered w-full"
+          rows="3"
+          [formControl]="descripcionCurricula"
+          placeholder="Ej. Currícula del primer parcial, contenidos, etc."
+        ></textarea>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" class="btn btn-ghost btn-sm" (click)="cerrarModal()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="guardarCurriculaDesdeModal()"
+            [disabled]="saving() || !descripcionCurricula.value.trim()"
+          >
+            Guardar
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Paginación -->
     <div class="mt-3 flex items-center gap-2">
-      <button class="btn-outline" (click)="prev()" [disabled]="page() <= 1">
-        Anterior
-      </button>
-      <button
-        class="btn-outline"
-        (click)="next()"
-        [disabled]="page() >= totalPages()"
-      >
+      <button class="btn-outline" (click)="prev()" [disabled]="page() <= 1">Anterior</button>
+      <button class="btn-outline" (click)="next()" [disabled]="page() >= totalPages()">
         Siguiente
       </button>
     </div>
