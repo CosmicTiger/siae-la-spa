@@ -11,6 +11,12 @@ export interface NivelDetalleResumenDto {
   gradoDescripcion: string;
   seccionDescripcion: string;
 }
+
+export interface NivelDetalleCreateDto {
+  nivelId: number;
+  gradoSeccionId: number;
+  totalVacantes?: number | null;
+}
 @Injectable({ providedIn: 'root' })
 export class NivelService {
   private api = inject(ApiService);
@@ -47,6 +53,9 @@ export class NivelService {
       .pipe(map((r) => r));
   }
 
+  createNivelDetalle(payload: NivelDetalleCreateDto) {
+    return this.api.post<any>(`${this.base}/detalle`, payload);
+  }
   asignarCursoANivel(
     nivelId: number,
     payload: { nivelDetalleId: number; cursoId: number; activo: boolean }

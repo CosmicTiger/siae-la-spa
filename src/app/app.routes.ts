@@ -125,7 +125,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'grado_seccion',
+        path: 'grado-seccion',
         loadComponent: () =>
           import('./features/catalogos/grado-seccion/pages/grado-seccion-list.component').then(
             (m) => m.GradoSeccionListComponent

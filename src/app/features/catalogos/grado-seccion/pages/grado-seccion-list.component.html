@@ -1,0 +1,94 @@
+<div class="p-4">
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="text-lg font-semibold">Grado / Sección por nivel</h3>
+
+    <button class="btn btn-sm" type="button" (click)="abrirModalNuevo()">+ Agregar</button>
+  </div>
+
+  <div *ngIf="loading">Cargando...</div>
+
+  <ul *ngIf="!loading" class="space-y-2">
+    <li *ngFor="let p of items()" class="p-2 border rounded flex justify-between items-center">
+      <div>
+        <strong>
+          {{ p.nivelDescripcion }} ({{ p.turno }}) - {{ p.gradoDescripcion }}
+          {{ p.seccionDescripcion }}
+        </strong>
+        <div class="text-sm text-gray-600">
+          NivelDetalleId: {{ p.nivelDetalleId }} · GradoSecciónId:
+          {{ p.gradoSeccionId }}
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-sm" (click)="edit(p)">Editar</button>
+        <button class="btn btn-sm btn-error" (click)="remove(p.gradoSeccionId)">Eliminar</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="modalAbierto()" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-slate-900 text-white rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
+    <h4 class="text-lg font-semibold mb-2">Asignar grado / sección a un nivel</h4>
+
+    <form [formGroup]="formNuevo" (ngSubmit)="guardarNuevo()">
+      <!-- Nivel -->
+      <div class="mb-3">
+        <label class="block text-sm mb-1">Nivel</label>
+        <select class="input w-full" formControlName="nivelId">
+          <option [ngValue]="null">-- Selecciona nivel --</option>
+          <option *ngFor="let n of niveles()" [ngValue]="n.id">
+            {{ n.descripcionNivel }} ({{ n.descripcionTurno }})
+          </option>
+        </select>
+        <div
+          *ngIf="formNuevo.controls.nivelId.touched && formNuevo.controls.nivelId.invalid"
+          class="text-xs text-red-400 mt-1"
+        >
+          El nivel es requerido.
+        </div>
+      </div>
+
+      <!-- Grado / Sección -->
+      <div class="mb-3">
+        <label class="block text-sm mb-1">Grado / Sección</label>
+        <select class="input w-full" formControlName="gradoSeccionId">
+          <option [ngValue]="null">-- Selecciona grado / sección --</option>
+          <option *ngFor="let g of grados()" [ngValue]="g.id">
+            {{ g.descripcionGrado }} - {{ g.descripcionSeccion }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            formNuevo.controls.gradoSeccionId.touched && formNuevo.controls.gradoSeccionId.invalid
+          "
+          class="text-xs text-red-400 mt-1"
+        >
+          El grado/sección es requerido.
+        </div>
+      </div>
+
+      <!-- Vacantes -->
+      <div class="mb-3">
+        <label class="block text-sm mb-1">Total de vacantes (opcional)</label>
+        <input
+          type="number"
+          min="0"
+          class="input w-full"
+          formControlName="totalVacantes"
+          placeholder="Ej. 30"
+        />
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" class="btn btn-sm btn-ghost" (click)="cerrarModalNuevo()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-sm" [disabled]="formNuevo.invalid || saving">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
