@@ -38,7 +38,9 @@ export const routes: Routes = [
     path: 'docentes',
     canActivate: [canActivateAuth],
     loadComponent: () =>
-      import('./features/docentes/pages/docentes.component').then((m) => m.DocentesComponent),
+      import('./features/docentes/pages/docente/docentes.component').then(
+        (m) => m.DocentesComponent
+      ),
     children: [
       {
         path: ':id',
