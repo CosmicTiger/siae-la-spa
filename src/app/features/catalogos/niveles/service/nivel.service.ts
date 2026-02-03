@@ -46,6 +46,10 @@ export class NivelService {
     return this.api.get<any[]>(`/api/niveles/cursos`);
   }
 
+  getCursosPorGrado(nivelId: number, gradoSeccionId: number) {
+    return this.api.get<any[]>(`/api/Grados/nivel/${nivelId}/grado/${gradoSeccionId}/cursos`);
+  }
+
   createNivelDetalle(payload: NivelDetalleCreateDto) {
     return this.api.post<any>(`${this.base}/detalle`, payload);
   }
@@ -56,7 +60,7 @@ export class NivelService {
 
   asignarCursoANivel(
     nivelId: number,
-    payload: { nivelDetalleId: number; cursoId: number; activo: boolean }
+    payload: { nivelDetalleId: number; cursoId: number; activo: boolean },
   ) {
     return this.api.post<any>(`${this.base}/${nivelId}/cursos`, payload);
   }

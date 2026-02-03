@@ -31,7 +31,7 @@ export const routes: Routes = [
         path: ':id',
         loadComponent: () =>
           import('./features/alumnos/components/alumno-detail.component').then(
-            (m) => m.AlumnoDetailComponent
+            (m) => m.AlumnoDetailComponent,
           ),
       },
     ],
@@ -41,14 +41,14 @@ export const routes: Routes = [
     canActivate: [canActivateAuth],
     loadComponent: () =>
       import('./features/docentes/pages/docente/docentes.component').then(
-        (m) => m.DocentesComponent
+        (m) => m.DocentesComponent,
       ),
     children: [
       {
         path: ':id',
         loadComponent: () =>
           import('./features/docentes/components/docente-detail.component').then(
-            (m) => m.DocenteDetailComponent
+            (m) => m.DocenteDetailComponent,
           ),
       },
     ],
@@ -57,14 +57,14 @@ export const routes: Routes = [
     path: 'curriculas',
     loadComponent: () =>
       import('./features/docentes/pages/curricula/curricula.component').then(
-        (m) => m.CurriculaComponent
+        (m) => m.CurriculaComponent,
       ),
   },
   {
     path: 'asignar-docente',
     loadComponent: () =>
       import('./features/docentes/pages/asignar-docente/asignar-docente.component').then(
-        (m) => m.AsignarDocenteComponent
+        (m) => m.AsignarDocenteComponent,
       ),
   },
   {
@@ -81,21 +81,28 @@ export const routes: Routes = [
         path: '',
         loadComponent: () =>
           import('./features/calificaciones/components/curricula-list.component').then(
-            (m) => m.CurriculaListComponent
+            (m) => m.CurriculaListComponent,
+          ),
+      },
+      {
+        path: 'alumno',
+        loadComponent: () =>
+          import('./features/calificaciones/components/calificacion-alumno.component').then(
+            (m) => m.CalificacionAlumnoComponent,
           ),
       },
       {
         path: 'editor',
         loadComponent: () =>
           import('./features/calificaciones/components/calificacion-editor.component').then(
-            (m) => m.CalificacionEditorComponent
+            (m) => m.CalificacionEditorComponent,
           ),
       },
       {
         path: 'editor/:docenteId/:cursoId',
         loadComponent: () =>
           import('./features/calificaciones/components/calificacion-editor.component').then(
-            (m) => m.CalificacionEditorComponent
+            (m) => m.CalificacionEditorComponent,
           ),
       },
     ],
@@ -108,63 +115,63 @@ export const routes: Routes = [
         path: 'periodos',
         loadComponent: () =>
           import('./features/catalogos/periodos/pages/periodo-list.component').then(
-            (m) => m.PeriodoListComponent
+            (m) => m.PeriodoListComponent,
           ),
       },
       {
         path: 'periodos/nuevo',
         loadComponent: () =>
           import('./features/catalogos/periodos/components/periodo-form.component').then(
-            (m) => m.PeriodoFormComponent
+            (m) => m.PeriodoFormComponent,
           ),
       },
       {
         path: 'niveles',
         loadComponent: () =>
           import('./features/catalogos/niveles/pages/nivel-list.component').then(
-            (m) => m.NivelListComponent
+            (m) => m.NivelListComponent,
           ),
       },
       {
         path: 'niveles/nuevo',
         loadComponent: () =>
           import('./features/catalogos/niveles/components/nivel-form.component').then(
-            (m) => m.NivelFormComponent
+            (m) => m.NivelFormComponent,
           ),
       },
       {
         path: 'grado-seccion',
         loadComponent: () =>
           import('./features/catalogos/grado-seccion/pages/grado-seccion-list.component').then(
-            (m) => m.GradoSeccionListComponent
+            (m) => m.GradoSeccionListComponent,
           ),
       },
       {
         path: 'cursos',
         loadComponent: () =>
           import('./features/catalogos/cursos/pages/cursos.component').then(
-            (m) => m.CursosComponent
+            (m) => m.CursosComponent,
           ),
       },
       {
         path: 'cursos/nuevo',
         loadComponent: () =>
           import('./features/catalogos/cursos/components/curso-form.component').then(
-            (m) => m.CursoFormComponent
+            (m) => m.CursoFormComponent,
           ),
       },
       {
         path: 'horarios',
         loadComponent: () =>
           import('./features/catalogos/horario/pages/horario-list.component').then(
-            (m) => m.HorarioListComponent
+            (m) => m.HorarioListComponent,
           ),
       },
       {
         path: 'horarios/nuevo',
         loadComponent: () =>
           import('./features/catalogos/horario/components/horario-form.component').then(
-            (m) => m.HorarioFormComponent
+            (m) => m.HorarioFormComponent,
           ),
       },
     ],
@@ -173,7 +180,7 @@ export const routes: Routes = [
     path: 'cursos/asignar',
     loadComponent: () =>
       import('./features/catalogos/cursos/components/asignar-curso/asignar-curso.component').then(
-        (m) => m.AsignarCursoComponent
+        (m) => m.AsignarCursoComponent,
       ),
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },

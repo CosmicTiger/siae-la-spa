@@ -114,7 +114,7 @@ export class AsignarDocenteComponent implements OnInit {
     }
     const dto: DocenteAsignacionDto = {
       docenteId: this.docenteSeleccionadoId,
-      nivelDetalleCursoId: curso.nivelDetalleId,
+      nivelDetalleCursoId: curso.Id,
       activo: true,
     };
 

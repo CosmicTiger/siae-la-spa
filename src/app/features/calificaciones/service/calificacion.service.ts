@@ -27,6 +27,11 @@ export class CalificacionService {
     return this.api.post<any>(`${this.base}/bulk`, payload);
   }
 
+  crearByAlumno(payload: any) {
+    const body = payload || {};
+    return this.api.post<any>(`${this.base}`, body);
+  }
+
   consultaReporte(paramsObj: any) {
     const params: Record<string, any> = {};
     if (paramsObj) Object.keys(paramsObj).forEach((k) => (params[k] = paramsObj[k]));
