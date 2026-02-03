@@ -5,10 +5,8 @@ import { CursoService, AsignarCursoPayload } from '../../service/curso.service';
 import { finalize } from 'rxjs/operators';
 import { NivelDetalleDto } from '@app/core/models/persona.model';
 import { CursoReadDto } from '@app/core/models/cursos.model';
-import {
-  NivelDetalleResumenDto,
-  NivelService,
-} from '@app/features/catalogos/niveles/service/nivel.service';
+import { NivelService } from '@app/features/catalogos/niveles/service/nivel.service';
+import { NivelDetalleResumenDto } from '@app/core/models/nivel-detalle.model';
 
 @Component({
   selector: 'app-asignar-curso',

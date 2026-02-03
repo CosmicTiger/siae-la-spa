@@ -1,13 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../../core/api.service';
 import { map } from 'rxjs/operators';
-import { NivelDetalleResumenDto } from '../../niveles/service/nivel.service';
-
-export interface GradoSeccionDto {
-  id: number;
-  descripcionGrado: string;
-  descripcionSeccion: string;
-}
+import { NivelDetalleResumenDto } from '@app/core/models/nivel-detalle.model';
+import { GradoSeccionDto } from '@app/core/models/grado.model';
 
 @Injectable({ providedIn: 'root' })
 export class GradoSeccionService {
@@ -39,14 +34,14 @@ export class GradoSeccionService {
   }
 
   create(payload: any) {
-    return this.api.post<any>(this.base, payload);
+    return this.api.post<GradoSeccionDto>(this.base, payload);
   }
 
   update(id: number, payload: any) {
-    return this.api.put<any>(`${this.base}/${id}`, payload);
+    return this.api.put<GradoSeccionDto>(`${this.base}/${id}`, payload);
   }
 
   delete(id: number) {
-    return this.api.delete<any>(`${this.base}/${id}`);
+    return this.api.delete<GradoSeccionDto>(`${this.base}/${id}`);
   }
 }
