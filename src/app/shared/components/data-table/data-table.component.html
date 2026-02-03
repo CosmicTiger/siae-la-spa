@@ -1,19 +1,46 @@
 <div class="mb-4 flex items-center gap-2">
-  <input *ngIf="searchControl" [formControl]="searchControl" class="input max-w-sm" placeholder="Buscar" />
+  <ng-container *ngIf="showSearch">
+    <ng-container *ngIf="searchControl; else internalSearch">
+      <input [formControl]="searchControl" class="input max-w-sm" [placeholder]="searchPlaceholder" />
+    </ng-container>
+    <ng-template #internalSearch>
+      <input class="input max-w-sm" [placeholder]="searchPlaceholder" [(ngModel)]="search"
+        (ngModelChange)="onSearchInput($event)" />
+    </ng-template>
+  </ng-container>
   <button *ngIf="newLabel" class="btn" (click)="create.emit()">{{ newLabel }}</button>
+  <button class="btn" type="button"
+    (click)="toggleFilters()">{{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }}</button>
+  <button class="btn" type="button" (click)="resetFiltersAndSort()">Reiniciar Filtros y Ordenamientos</button>
 </div>
 
 <div class="card overflow-hidden">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50 text-xs uppercase text-gray-600">
       <tr>
-        <th *ngFor="let col of columns" class="px-4 py-3 text-left">{{ col.label }}</th>
+        <th *ngFor="let col of columns" class="px-4 py-3 text-left">
+          <button class="flex items-center gap-1" type="button" (click)="toggleSort(col.key)">
+            <span>{{ col.label }}</span>
+            <span *ngIf="sortKey === col.key">
+              <span *ngIf="sortDir === 'asc'">▲</span>
+              <span *ngIf="sortDir === 'desc'">▼</span>
+            </span>
+          </button>
+        </th>
         <th class="px-4 py-3 text-left">Activo</th>
         <th class="px-4 py-3 text-left">Acciones</th>
       </tr>
+      <tr *ngIf="enableFilters && showFilters" class="bg-gray-100 text-xs text-gray-500">
+        <th *ngFor="let col of columns" class="px-4 py-2">
+          <input class="input input-xs w-full" [value]="filters[col.key]"
+            (input)="onFilterChange(col.key, $any($event.target).value)" placeholder="Filtrar {{ col.label }}" />
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
     </thead>
     <tbody class="divide-y divide-gray-100 bg-white text-gray-800">
-      <tr *ngFor="let item of items">
+      <tr *ngFor="let item of displayItems">
         <td *ngFor="let col of columns" class="px-4 py-3">
           <ng-container *ngIf="getTemplate(col.key) as tmpl; else defaultCell">
             <ng-container *ngTemplateOutlet="tmpl; context: { $implicit: item, item: item }"></ng-container>

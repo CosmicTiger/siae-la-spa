@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../core/api.service';
 import { map } from 'rxjs';
-import { MatriculaCreateDto, MatriculaReadDto } from '../../../core/models';
+import { MatriculaCreateDto, MatriculaReadDto } from '../../../core/models/persona.model';
 
 @Injectable({ providedIn: 'root' })
 export class MatriculasService {

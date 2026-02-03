@@ -1,0 +1,5 @@
+alumnoId,alumnoNombre,asignaturaId,asignaturaNombre,nota
+1,"Juan Perez",101,"Matemáticas",15
+1,"Juan Perez",102,"Comunicación",17
+2,"María López",101,"Matemáticas",14
+2,"María López",102,"Comunicación",16

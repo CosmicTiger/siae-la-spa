@@ -18,7 +18,7 @@ import {
   GenericModalComponent,
 } from '@app/shared/components/generic-modal/generic-modal.component';
 import { AlumnosService } from '../service/alumnos.service';
-import { AlumnoReadDetailDto } from '../../../core/models';
+import { AlumnoReadDetailDto } from '../../../core/models/persona.model';
 
 @Component({
   standalone: true,

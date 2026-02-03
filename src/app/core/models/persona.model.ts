@@ -1,28 +1,3 @@
-export interface ApiResponse<T> {
-  message?: string;
-  data?: T;
-}
-
-export interface AuthResponse {
-  accessToken: string;
-  email: string;
-  fullName: string;
-  roles: string[];
-}
-
-export interface LoginDto {
-  email: string;
-  password: string;
-}
-
-// Backend: PaginationResult<T>
-export interface PaginationResult<T> {
-  page: number;
-  pageSize: number;
-  totalItems: number;
-  items: T[];
-}
-
 export interface PersonaReadDto {
   id: number;
   nombres: string;
@@ -34,17 +9,12 @@ export interface PersonaReadDto {
   ciudad: string | null;
   direccion: string | null;
   activo: boolean;
+  sexo: Sexo;
 }
 
 export interface AlumnoReadDto extends PersonaReadDto {}
 
 export interface DocenteReadDto extends PersonaReadDto {}
-
-export interface QueryParams {
-  page?: number;
-  pageSize?: number;
-  search?: string;
-}
 
 // Creación avanzada (coincide con tu backend)
 export type Sexo = 'M' | 'F' | 'O';
@@ -229,4 +199,11 @@ export interface AlumnoReadDetailDto {
   matriculaActual?: MatriculaActualDto | null;
   tutor?: TutorResumenDto | null;
   activo: boolean;
+}
+
+export interface DocenteAsignacionDto {
+  docenteId: number;
+  nivelDetalleCursoId: number;
+  activo: boolean;
+  propertyName?: string;
 }

@@ -13,6 +13,10 @@ import { trigger, style, transition, animate } from '@angular/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MODAL_DATA, MODAL_REF } from '@app/shared/components/modal-host/modal-host.service';
 import { ModalHostService } from '@app/shared/components/modal-host/modal-host.service';
+import {
+  FieldDef,
+  GenericModalComponent,
+} from '@app/shared/components/generic-modal/generic-modal.component';
 import { DocentesService } from '../service/docentes.service';
 
 @Component({
@@ -83,17 +87,48 @@ export class DocenteDetailComponent implements OnInit {
     ) {
       const idFromRoute = Number(this.route.snapshot.paramMap.get('id')) || null;
       const id = this.docenteId ?? idFromRoute;
-      const ref = this.host.open({
-        component: DocenteDetailComponent,
-        data: { docenteId: id },
-        title: 'Docente',
+      if (!id) return;
+      this.loading = true;
+      this.svc.getById(id).subscribe({
+        next: (d) => {
+          this.docente = d as any;
+          const schema: FieldDef[] = [
+            { key: 'nombres', label: 'Nombres', type: 'string' },
+            { key: 'apellidos', label: 'Apellidos', type: 'string' },
+            { key: 'documentoIdentidad', label: 'Documento', type: 'string' },
+            { key: 'email', label: 'Email', type: 'string' },
+            { key: 'numeroTelefono', label: 'Teléfono', type: 'string' },
+            { key: 'ciudad', label: 'Ciudad', type: 'string' },
+            {
+              key: 'perfil',
+              label: 'Perfil',
+              collapsible: true,
+              collapsedByDefault: false,
+              noDataText: 'No hay información del perfil',
+              children: [
+                { key: 'especialidad', label: 'Especialidad', type: 'string' },
+                { key: 'categoria', label: 'Categoría', type: 'string' },
+              ],
+            },
+          ];
+
+          const ref = this.host.open({
+            component: GenericModalComponent,
+            data: { schema, data: this.docente },
+            title: `Docente-${id}: ${this.docente?.nombres} ${this.docente?.apellidos}`,
+          });
+
+          ref.afterClosed
+            ?.then(() => {
+              this.router.navigate(['../'], { relativeTo: this.route }).catch(() => {});
+            })
+            .catch(() => {});
+
+          this.forwardedToHost = true;
+        },
+        error: () => {},
+        complete: () => (this.loading = false),
       });
-      ref.afterClosed
-        ?.then(() => {
-          this.router.navigate(['../'], { relativeTo: this.route }).catch(() => {});
-        })
-        .catch(() => {});
-      this.forwardedToHost = true;
       return;
     }
 

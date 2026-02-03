@@ -1,0 +1,38 @@
+<div class="p-4 space-y-4">
+  <h2 class="text-xl font-semibold">Asignar curso a nivel / sección</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Nivel detalle -->
+    <div>
+      <label class="block text-sm font-medium mb-1"> Nivel / Grado / Sección </label>
+      <select class="input min-w-[260px]" formControlName="nivelDetalleId">
+        <option [ngValue]="null">-- Selecciona --</option>
+        <option *ngFor="let nd of nivelesDetalle()" [ngValue]="nd.nivelDetalleId">
+          {{ nd.nivelDescripcion }} - {{ nd.gradoDescripcion }}
+          {{ nd.seccionDescripcion }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Curso -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Curso</label>
+      <select class="input min-w-[260px]" formControlName="cursoId">
+        <option [ngValue]="null">-- Selecciona --</option>
+        <option *ngFor="let c of items()" [ngValue]="c.id">
+          {{ c.descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Activo -->
+    <div class="flex items-center gap-2">
+      <input type="checkbox" formControlName="activo" id="activo" />
+      <label for="activo" class="text-sm">Activo</label>
+    </div>
+
+    <button class="btn" type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Guardando...' : 'Asignar curso' }}
+    </button>
+  </form>
+</div>

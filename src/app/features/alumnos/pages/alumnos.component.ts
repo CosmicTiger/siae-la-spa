@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AlumnosService } from '../service/alumnos.service';
-import { AlumnoReadDto } from '../../../core/models';
+import { AlumnoReadDto } from '../../../core/models/persona.model';
 import { StudentDialogComponent } from '../components/student-dialog.component';
 import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
 

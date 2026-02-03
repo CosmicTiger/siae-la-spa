@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth } from '@features/auth/guards/auth.guard';
+import { AsignarCursoComponent } from './features/catalogos/cursos/components/asignar-curso/asignar-curso.component';
+import { AsignarDocenteComponent } from './features/docentes/pages/asignar-docente/asignar-docente.component';
 
 export const routes: Routes = [
   {
@@ -12,6 +14,12 @@ export const routes: Routes = [
     canActivate: [canActivateAuth],
     loadComponent: () =>
       import('./features/home/pages/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'usuarios',
+    canActivate: [canActivateAuth],
+    loadComponent: () =>
+      import('./features/usuarios/pages/usuarios.component').then((m) => m.UsuariosComponent),
   },
   {
     path: 'alumnos',
@@ -32,7 +40,9 @@ export const routes: Routes = [
     path: 'docentes',
     canActivate: [canActivateAuth],
     loadComponent: () =>
-      import('./features/docentes/pages/docentes.component').then((m) => m.DocentesComponent),
+      import('./features/docentes/pages/docente/docentes.component').then(
+        (m) => m.DocentesComponent
+      ),
     children: [
       {
         path: ':id',
@@ -44,10 +54,127 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'curriculas',
+    loadComponent: () =>
+      import('./features/docentes/pages/curricula/curricula.component').then(
+        (m) => m.CurriculaComponent
+      ),
+  },
+  {
+    path: 'asignar-docente',
+    loadComponent: () =>
+      import('./features/docentes/pages/asignar-docente/asignar-docente.component').then(
+        (m) => m.AsignarDocenteComponent
+      ),
+  },
+  {
     path: 'matriculas',
     canActivate: [canActivateAuth],
     loadComponent: () =>
       import('./features/matriculas/pages/matriculas.component').then((m) => m.MatriculasComponent),
+  },
+  {
+    path: 'calificaciones',
+    canActivate: [canActivateAuth],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/calificaciones/components/curricula-list.component').then(
+            (m) => m.CurriculaListComponent
+          ),
+      },
+      {
+        path: 'editor',
+        loadComponent: () =>
+          import('./features/calificaciones/components/calificacion-editor.component').then(
+            (m) => m.CalificacionEditorComponent
+          ),
+      },
+      {
+        path: 'editor/:docenteId/:cursoId',
+        loadComponent: () =>
+          import('./features/calificaciones/components/calificacion-editor.component').then(
+            (m) => m.CalificacionEditorComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: 'catalogos',
+    canActivate: [canActivateAuth],
+    children: [
+      {
+        path: 'periodos',
+        loadComponent: () =>
+          import('./features/catalogos/periodos/pages/periodo-list.component').then(
+            (m) => m.PeriodoListComponent
+          ),
+      },
+      {
+        path: 'periodos/nuevo',
+        loadComponent: () =>
+          import('./features/catalogos/periodos/components/periodo-form.component').then(
+            (m) => m.PeriodoFormComponent
+          ),
+      },
+      {
+        path: 'niveles',
+        loadComponent: () =>
+          import('./features/catalogos/niveles/pages/nivel-list.component').then(
+            (m) => m.NivelListComponent
+          ),
+      },
+      {
+        path: 'niveles/nuevo',
+        loadComponent: () =>
+          import('./features/catalogos/niveles/components/nivel-form.component').then(
+            (m) => m.NivelFormComponent
+          ),
+      },
+      {
+        path: 'grado-seccion',
+        loadComponent: () =>
+          import('./features/catalogos/grado-seccion/pages/grado-seccion-list.component').then(
+            (m) => m.GradoSeccionListComponent
+          ),
+      },
+      {
+        path: 'cursos',
+        loadComponent: () =>
+          import('./features/catalogos/cursos/pages/cursos.component').then(
+            (m) => m.CursosComponent
+          ),
+      },
+      {
+        path: 'cursos/nuevo',
+        loadComponent: () =>
+          import('./features/catalogos/cursos/components/curso-form.component').then(
+            (m) => m.CursoFormComponent
+          ),
+      },
+      {
+        path: 'horarios',
+        loadComponent: () =>
+          import('./features/catalogos/horario/pages/horario-list.component').then(
+            (m) => m.HorarioListComponent
+          ),
+      },
+      {
+        path: 'horarios/nuevo',
+        loadComponent: () =>
+          import('./features/catalogos/horario/components/horario-form.component').then(
+            (m) => m.HorarioFormComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: 'cursos/asignar',
+    loadComponent: () =>
+      import('./features/catalogos/cursos/components/asignar-curso/asignar-curso.component').then(
+        (m) => m.AsignarCursoComponent
+      ),
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: '**', redirectTo: 'home' },

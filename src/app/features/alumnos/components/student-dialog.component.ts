@@ -22,7 +22,7 @@ import {
 import { Subscription } from 'rxjs';
 import { AlumnosService } from '../service/alumnos.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
-import { AlumnoCreateWithAccountsDto, Sexo } from '../../../core/models';
+import { AlumnoCreateWithAccountsDto, Sexo } from '../../../core/models/persona.model';
 
 @Component({
   standalone: true,

@@ -5,11 +5,13 @@ import { ApiService } from '../../../core/api.service';
 import {
   PersonaResumenDto,
   PersonaReadDto,
-  PaginationResult,
   DocenteReadDto,
   DocenteCreateWithAccountsDto,
   DocenteCreateResultDto,
-} from '../../../core/models';
+  DocenteAsignacionDto,
+  DocenteCursoDto,
+} from '../../../core/models/persona.model';
+import { PaginationResult } from '@app/core/interface/pagination.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DocentesService {
@@ -22,9 +24,7 @@ export class DocentesService {
   list(page = 1, pageSize = 10, search = ''): Observable<PaginationResult<DocenteReadDto>> {
     const params: Record<string, any> = { page, pageSize };
     if (search) params['search'] = search;
-    return this.api
-      .get<PaginationResult<DocenteReadDto>>(this.base, { params })
-      .pipe(map((r) => r!));
+    return this.api.get<PaginationResult<DocenteReadDto>>(this.base, params).pipe(map((r) => r!));
   }
 
   getById(id: number): Observable<DocenteReadDto | null> {
@@ -39,7 +39,17 @@ export class DocentesService {
     return this.api.put<DocenteReadDto>(`${this.base}/${id}`, payload);
   }
 
-  setActive(id: number, activo: boolean): Observable<null> {
-    return this.api.patch<null>(`${this.base}/${id}/activo`, { activo });
+  setActive(id: number, activo: boolean, docente: any): Observable<DocenteReadDto | null> {
+    const payload: any = {
+      ...docente,
+      activo: activo,
+    };
+    return this.update(id, payload);
+  }
+
+  asignarDocenteACurso(payload: DocenteAsignacionDto[]) {
+    return this.api
+      .post<any>(`${this.base}/asignacion`, payload)
+      .pipe(map((r) => r.data as DocenteCursoDto[]));
   }
 }
