@@ -9,19 +9,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NivelService } from '@app/features/catalogos/niveles/service/nivel.service';
 import { CursoService } from '@app/features/catalogos/cursos/service/curso.service';
-import { NivelDetalleResumenDto } from '../../../catalogos/niveles/service/nivel.service';
-
-interface CursoAsignableDto {
-  Id: number;
-  nivelDetalleId: number;
-  cursoId: number;
-
-  nivelDescripcion?: string;
-  turno?: string;
-  gradoDescripcion?: string;
-  seccionDescripcion?: string;
-  cursoDescripcion?: string;
-}
+import { NivelDetalleResumenDto } from '@app/core/models/nivel-detalle.model';
+import { CursoAsignableDto } from '@app/core/models/curso.model';
 
 @Component({
   selector: 'app-asignar-docente',
