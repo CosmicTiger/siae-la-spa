@@ -1,0 +1,78 @@
+<div class="p-4 space-y-4">
+  <div>
+    <h3 class="text-lg font-semibold">Calificaciones agrupadas</h3>
+    <p class="text-sm text-gray-600">
+      Vista por nivel/detalle, cursos, currículas y calificaciones de alumnos activos.
+    </p>
+  </div>
+
+  <div *ngIf="loading" class="text-sm">Cargando...</div>
+  <div *ngIf="error" class="text-sm text-red-500">{{ error }}</div>
+
+  <div *ngIf="!loading && !grupos.length" class="text-sm text-gray-600">
+    No hay datos para mostrar.
+  </div>
+
+  <div *ngFor="let g of grupos" class="space-y-3 border rounded p-3">
+    <details class="rounded" open>
+      <summary class="cursor-pointer select-none flex items-center justify-between">
+        <div class="font-semibold">
+          {{ g.nivelDescripcion }} {{ g.gradoDescripcion }} {{ g.seccionDescripcion }}
+        </div>
+        <div class="text-xs text-gray-500" *ngIf="g.turno">Turno: {{ g.turno }}</div>
+      </summary>
+
+      <div class="mt-3 space-y-3">
+        <div class="text-xs text-gray-500">Nivel detalle: {{ g.nivelDetalleId }}</div>
+
+        <div *ngIf="!g.alumnos.length" class="text-sm text-gray-600">
+          No hay alumnos activos matriculados en este nivel detalle.
+        </div>
+
+        <div *ngIf="!g.cursos.length" class="text-sm text-gray-600">
+          No hay cursos asignados activos para este nivel detalle.
+        </div>
+
+        <div *ngFor="let c of g.cursos" class="space-y-2">
+          <details class="rounded border p-2" open>
+            <summary class="cursor-pointer select-none font-medium">
+              {{ c.cursoDescripcion }}
+              <span class="text-xs text-gray-500">· {{ c.docenteNombre }}</span>
+            </summary>
+
+            <div class="mt-2">
+              <div *ngIf="!c.curriculas.length" class="text-sm text-gray-600">
+                Sin currículas activas para este curso.
+              </div>
+
+              <details *ngFor="let a of g.alumnos" class="rounded border p-2 mt-2">
+                <summary class="cursor-pointer select-none">
+                  {{ a.nombre }}
+                </summary>
+
+                <div class="mt-2" *ngIf="c.curriculas.length">
+                  <div class="overflow-auto">
+                    <table class="table table-compact w-full">
+                      <thead>
+                        <tr>
+                          <th>Currícula</th>
+                          <th class="w-24">Nota</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let cu of c.curriculas">
+                          <td>{{ cu.titulo || cu.descripcion }}</td>
+                          <td>{{ notaValue(c, a.alumnoId, cu.id) ?? '—' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </details>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>

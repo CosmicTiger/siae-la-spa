@@ -23,6 +23,10 @@ export class CalificacionService {
     return this.api.get<any>(this.base, params).pipe(map((r) => r));
   }
 
+  obtenerNotasByAlumno(alumnoId: number) {
+    return this.api.get<any>(`${this.base}/by-alumno/${alumnoId}`).pipe(map((r) => r));
+  }
+
   guardarNotas(payload: any[]) {
     return this.api.post<any>(`${this.base}/bulk`, payload);
   }

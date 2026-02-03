@@ -183,6 +183,13 @@ export const routes: Routes = [
         (m) => m.AsignarCursoComponent,
       ),
   },
+  {
+    path: 'agrupadas',
+    loadComponent: () =>
+      import('./features/calificaciones/pages/calificaciones-agrupadas.component').then(
+        (m) => m.CalificacionesAgrupadasComponent,
+      ),
+  },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: '**', redirectTo: 'home' },
 ];
