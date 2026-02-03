@@ -65,7 +65,7 @@ export class NavbarComponent implements OnInit {
       items: [
         { label: 'Listado de Docentes', to: '/docentes' },
         { label: 'Agregar Currícula', to: '/curriculas' },
-        { label: 'Agregar Calificación', to: '/docentes/calificaciones/nueva' },
+        { label: 'Agregar Calificación', to: '/calificaciones/alumno' },
         { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
         { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
       ],
@@ -76,6 +76,7 @@ export class NavbarComponent implements OnInit {
         { label: 'Listado de Cursos', to: '/catalogos/cursos' },
         { label: 'Asignar Cursos', to: '/cursos/asignar' },
         { label: 'Asignar Docente', to: '/asignar-docente' },
+        { label: 'Ver Calificaciones', to: '/agrupadas' },
       ],
     },
     {
@@ -225,7 +226,7 @@ export class NavbarComponent implements OnInit {
       this.closeMenu();
       // focus back to the button
       const btn = this.el.nativeElement.querySelector(
-        `button[data-menu-btn="${label}"]`
+        `button[data-menu-btn="${label}"]`,
       ) as HTMLElement | null;
       btn?.focus();
     }

@@ -287,7 +287,7 @@ export class CalificacionAlumnoComponent implements OnInit {
         const existingList = existing || [];
         const requests = payloads.map((p) => {
           const current = existingList.find(
-            (n: any) => Number(n.curriculaId) === Number(p.curricula.id)
+            (n: any) => Number(n.curriculaId) === Number(p.curricula.id),
           );
           const body = {
             CurriculaId: p.curricula.id,
