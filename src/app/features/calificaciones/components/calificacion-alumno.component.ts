@@ -282,23 +282,40 @@ export class CalificacionAlumnoComponent implements OnInit {
     this.saving = true;
     this.error = this.success = null;
 
-    const requests = payloads.map((p) => {
-      const body = {
-        CurriculaId: p.curricula.id,
-        AlumnoId: this.selectedAlumnoId!,
-        Nota: Number(p.nota),
-      };
-      return this.calificacionesSvc.crearByAlumno(body);
-    });
+    this.calificacionesSvc.obtenerNotasByAlumno(this.selectedAlumnoId!).subscribe({
+      next: (existing) => {
+        const existingList = existing || [];
+        const requests = payloads.map((p) => {
+          const current = existingList.find(
+            (n: any) => Number(n.curriculaId) === Number(p.curricula.id)
+          );
+          const body = {
+            CurriculaId: p.curricula.id,
+            AlumnoId: this.selectedAlumnoId!,
+            Nota: Number(p.nota),
+          };
 
-    forkJoin(requests).subscribe({
-      next: () => {
-        this.success = 'Calificaciones registradas correctamente.';
+          if (current?.id) {
+            return this.calificacionesSvc.actualizar(current.id, body);
+          }
+
+          return this.calificacionesSvc.crearByAlumno(body);
+        });
+
+        forkJoin(requests).subscribe({
+          next: () => {
+            this.success = 'Calificaciones registradas correctamente.';
+          },
+          error: () => {
+            this.error = 'Error guardando calificaciones.';
+          },
+          complete: () => (this.saving = false),
+        });
       },
       error: () => {
-        this.error = 'Error guardando calificaciones.';
+        this.error = 'Error consultando calificaciones existentes.';
+        this.saving = false;
       },
-      complete: () => (this.saving = false),
     });
   }
 

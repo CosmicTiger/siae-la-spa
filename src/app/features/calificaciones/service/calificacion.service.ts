@@ -36,6 +36,10 @@ export class CalificacionService {
     return this.api.post<any>(`${this.base}`, body);
   }
 
+  actualizar(id: number, payload: any) {
+    return this.api.put<any>(`${this.base}/${id}`, payload);
+  }
+
   consultaReporte(paramsObj: any) {
     const params: Record<string, any> = {};
     if (paramsObj) Object.keys(paramsObj).forEach((k) => (params[k] = paramsObj[k]));
