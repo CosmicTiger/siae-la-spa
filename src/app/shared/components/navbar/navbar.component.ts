@@ -58,24 +58,27 @@ export class NavbarComponent implements OnInit {
     },
     {
       label: 'Alumnos',
-      items: [{ label: 'Listado de Alumnos', to: '/alumnos' }],
+      items: [
+        { label: 'Listado de Alumnos', to: '/alumnos' },
+
+        { label: 'Agregar Calificación', to: '/calificaciones/alumno' },
+      ],
     },
     {
       label: 'Docentes',
       items: [
         { label: 'Listado de Docentes', to: '/docentes' },
-        { label: 'Agregar Currícula', to: '/curriculas' },
-        { label: 'Agregar Calificación', to: '/calificaciones/alumno' },
-        { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
-        { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
+        { label: 'Asignar Docente', to: '/asignar-docente' },
+        /*{ label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
+        { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },*/
       ],
     },
     {
       label: 'Cursos',
       items: [
         { label: 'Listado de Cursos', to: '/catalogos/cursos' },
-        { label: 'Asignar Cursos', to: '/cursos/asignar' },
-        { label: 'Asignar Docente', to: '/asignar-docente' },
+        { label: 'Asignar Cursos a grados', to: '/cursos/asignar' },
+        { label: 'Agregar Currícula', to: '/curriculas' },
         { label: 'Ver Calificaciones', to: '/agrupadas' },
       ],
     },
