@@ -1,3 +1,5 @@
+import { AuditInfo } from './audit.model';
+
 export interface NivelDetalleResumenDto {
   nivelDetalleId: number;
   nivelId: number;
@@ -8,7 +10,8 @@ export interface NivelDetalleResumenDto {
   seccionDescripcion: string;
   totalVacantes: number;
   vacantesOcupadas: number;
-  fechaRegistro: Date;
+  fechaRegistro: string;
+  audit?: AuditInfo;
 }
 
 export interface NivelDetalleCreateDto {

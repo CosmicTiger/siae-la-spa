@@ -112,10 +112,17 @@ export const routes: Routes = [
     canActivate: [canActivateAuth],
     children: [
       {
+        path: 'anho-lectivo',
+        loadComponent: () =>
+          import('./features/catalogos/anio-lectivo/list/anio-lectivo-list.component').then(
+            (m) => m.AnioLectivoListComponent,
+          ),
+      },
+      {
         path: 'periodos',
         loadComponent: () =>
-          import('./features/catalogos/periodos/pages/periodo-list.component').then(
-            (m) => m.PeriodoListComponent,
+          import('./features/catalogos/periodos/pages/periodos-list.component').then(
+            (m) => m.PeriodosListComponent,
           ),
       },
       {

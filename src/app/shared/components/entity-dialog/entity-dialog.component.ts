@@ -10,7 +10,15 @@ import {
 import { ModalComponent } from '../modal/modal.component';
 import { Observable } from 'rxjs';
 
-export type FieldType = 'text' | 'email' | 'password' | 'date' | 'select' | 'checkbox' | 'group';
+export type FieldType =
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'date'
+  | 'select'
+  | 'checkbox'
+  | 'group';
 
 export interface FieldDef {
   key: string;
@@ -114,7 +122,8 @@ export class EntityDialogComponent implements OnChanges {
     this.error = '';
 
     try {
-      const val = this.form.value;
+      const raw = this.form.value;
+      const val = this.normalizeValue(raw, this.schema || []);
       const res = this.submitFn ? this.submitFn(this.initial, val) : null;
       if (!res) {
         // no submit function, assume success
@@ -149,5 +158,30 @@ export class EntityDialogComponent implements OnChanges {
       this.loading = false;
       this.error = e?.message || String(e);
     }
+  }
+
+  // Normalize form values according to the schema (coerce numbers, handle groups)
+  private normalizeValue(obj: any, schema: FieldDef[]): any {
+    if (!schema || !Array.isArray(schema)) return obj;
+    const out: any = {};
+    for (const f of schema) {
+      const key = f.key;
+      if (f.type === 'group' && f.fields) {
+        out[key] = this.normalizeValue(obj ? obj[key] : undefined, f.fields);
+      } else {
+        const v = obj ? obj[key] : undefined;
+        if (f.type === 'number') {
+          if (v === null || v === undefined || v === '') {
+            out[key] = null;
+          } else {
+            const n = Number(v);
+            out[key] = Number.isNaN(n) ? null : n;
+          }
+        } else {
+          out[key] = v;
+        }
+      }
+    }
+    return out;
   }
 }

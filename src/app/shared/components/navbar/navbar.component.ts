@@ -43,12 +43,11 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Configuraciones',
       items: [
-        { label: 'Año Lectivo', to: '/catalogos/creacion_anho_lectivo' },
+        { label: 'Año Lectivo', to: '/catalogos/anho-lectivo' },
         { label: 'Periodos', to: '/catalogos/periodos' },
         { label: 'Niveles', to: '/catalogos/niveles' },
         { label: 'Grados y Secciones', to: '/catalogos/grado-seccion' },
         { label: 'Cursos', to: '/catalogos/cursos' },
-        { label: 'Vacantes', to: '/catalogos/vacantes' },
         { label: 'Horarios', to: '/catalogos/horarios' },
       ],
     },
@@ -69,8 +68,6 @@ export class NavbarComponent implements OnInit {
       items: [
         { label: 'Listado de Docentes', to: '/docentes' },
         { label: 'Asignar Docente', to: '/asignar-docente' },
-        /*{ label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
-        { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },*/
       ],
     },
     {
@@ -90,7 +87,7 @@ export class NavbarComponent implements OnInit {
 
   tiles: Tile[] = [
     { title: 'Configuración', icon: '🛠️', to: '/config', cta: 'Ver Configuración' },
-    { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
+    // { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
     { title: 'Alumno', icon: '🎓', to: '/alumnos', cta: 'Ver Alumno' },
     { title: 'Docente', icon: '🧑‍🏫', to: '/docentes', cta: 'Ver Docente' },
     { title: 'Asignatura', icon: '📚', to: '/cursos', cta: 'Asignatura' },
