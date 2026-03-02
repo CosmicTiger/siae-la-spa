@@ -176,4 +176,15 @@ export class DataTableComponent {
   getTemplate(key: string) {
     return this.templateMap.get(key) as any | undefined;
   }
+
+  // Whether the consumer already provides an 'activo' column
+  get hasActivoColumn(): boolean {
+    try {
+      return !!(this.columns || []).some((c: any) =>
+        typeof c === 'string' ? c === 'activo' : c.key === 'activo',
+      );
+    } catch (e) {
+      return false;
+    }
+  }
 }

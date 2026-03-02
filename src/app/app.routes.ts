@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth } from '@features/auth/guards/auth.guard';
-import { AsignarCursoComponent } from './features/catalogos/cursos/components/asignar-curso/asignar-curso.component';
-import { AsignarDocenteComponent } from './features/docentes/pages/asignar-docente/asignar-docente.component';
 
 export const routes: Routes = [
   {

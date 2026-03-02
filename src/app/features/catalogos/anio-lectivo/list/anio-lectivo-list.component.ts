@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnioLectivoService } from '../anio-lectivo.service';
 import { AnioLectivoReadDto } from '@app/core/models/anio-lectivo.model';
+// date formatting handled locally for dd/mm/YYYY display
 import { AnioLectivoFormComponent } from '../form/anio-lectivo-form.component';
 import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
 
@@ -17,11 +18,11 @@ export class AnioLectivoListComponent implements OnInit {
 
   items = signal<AnioLectivoReadDto[]>([]);
   columns = [
-    { key: 'anio', label: 'Año' },
-    { key: 'descripcion', label: 'Descripción' },
-    { key: 'fechaInicio', label: 'Fecha inicio' },
-    { key: 'fechaFin', label: 'Fecha fin' },
-    { key: 'activo', label: 'Activo' },
+    { key: 'anio', label: 'AÑO LECTIVO' },
+    { key: 'descripcion', label: 'DESCRIPCIÓN' },
+    { key: 'fechaInicio', label: 'FECHA INICIO' },
+    { key: 'fechaFin', label: 'FECHA FIN' },
+    { key: 'activo', label: 'ACTIVO' },
   ];
   loading = false;
   modalOpen = signal(false);
@@ -72,6 +73,7 @@ export class AnioLectivoListComponent implements OnInit {
     if (!iso) return '—';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '—';
+    console.log('formatDate', iso, '->', d);
     const dd = String(d.getDate()).padStart(2, '0');
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const yyyy = d.getFullYear();

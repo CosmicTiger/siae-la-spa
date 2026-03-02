@@ -9,6 +9,12 @@
   <div *ngIf="loading">Cargando...</div>
   <app-data-table *ngIf="!loading" [items]="items()" [columns]="columns" [newLabel]="'Nuevo año lectivo'"
     (create)="openNew()" (edit)="openEdit($event)" (toggleActive)="toggleActive($event)">
+    <ng-template dtCell="fechaInicio" let-item>
+      {{ formatDate(item?.fechaInicio) }}
+    </ng-template>
+    <ng-template dtCell="fechaFin" let-item>
+      {{ formatDate(item?.fechaFin) }}
+    </ng-template>
   </app-data-table>
 
   <app-anio-lectivo-form [open]="modalOpen()" [initial]="editing()" (openChange)="modalOpen.set($event)"

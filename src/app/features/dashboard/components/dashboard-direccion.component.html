@@ -1,0 +1,17 @@
+<div class="p-4">
+  <h2 class="mb-3">Dashboard Dirección</h2>
+  <div *ngIf="loading()">Cargando métricas...</div>
+  <div *ngIf="!loading() && data()">
+    <div class="card p-3">
+      Total matrículas: {{ data()!.totalMatriculas }}
+    </div>
+
+    <div class="mt-3">
+      <h4>Vacancias por nivel</h4>
+      <ul>
+        <li *ngFor="let n of data()!.nivelDetalleVacancias">{{ n.nivel }} — vacantes: {{ n.vacantes }}, ocupadas:
+          {{ n.ocupadas }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
