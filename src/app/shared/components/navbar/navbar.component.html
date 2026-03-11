@@ -2,7 +2,10 @@
 <nav class="bg-neutral text-neutral-content shadow-lg mb-6">
   <div
     class="navbar w-full max-w-screen-lg mx-auto px-4 py-2 flex flex-col flex-wrap md:flex-row justify-center md:justify-between items-center">
-    <span class="font-bold text-lg">📝 SIAE</span>
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-lg">📝 SIAE</span>
+      <a [routerLink]="['/']" class="btn btn-sm btn-ghost ml-2" aria-label="Ir al inicio">🏠Inicio</a>
+    </div>
 
     <div class="flex flex-col flex-wrap md:flex-row items-center justify-center gap-4">
       @if (currentUser(); as user) {

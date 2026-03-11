@@ -42,6 +42,7 @@ export class DocentesComponent {
     { key: 'documentoIdentidad', label: 'Documento' },
     { key: 'ciudad', label: 'Ciudad' },
     { key: 'direccion', label: 'Dirección' },
+    { key: 'activo', label: 'Activo' },
   ];
 
   constructor() {

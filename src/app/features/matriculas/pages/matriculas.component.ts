@@ -36,6 +36,7 @@ export class MatriculasComponent implements OnInit {
     { key: 'periodoId', label: 'Periodo' },
     { key: 'fechaRegistro', label: 'Fecha' },
     { key: 'apoderadoId', label: 'Apoderado' },
+    { key: 'activo', label: 'Activo' },
   ];
 
   // schema for EntityDialog
@@ -51,7 +52,7 @@ export class MatriculasComponent implements OnInit {
     private alumnosSvc: AlumnosService,
     private modalSvc: MatriculaModalService,
     private nivelesSvcInject: NivelesService,
-    private periodosSvcInject: PeriodosService
+    private periodosSvcInject: PeriodosService,
   ) {
     this.nivelesSvc = this.nivelesSvcInject;
     this.periodosSvc = this.periodosSvcInject;

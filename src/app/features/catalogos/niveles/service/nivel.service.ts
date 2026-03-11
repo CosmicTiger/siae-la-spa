@@ -51,7 +51,11 @@ export class NivelService {
   }
 
   createNivelDetalle(payload: NivelDetalleCreateDto) {
-    return this.api.post<any>(`${this.base}/detalle`, payload);
+    const body = { ...payload };
+    // prevent accidental server-managed fields
+    delete (body as any).fechaRegistro;
+    delete (body as any).audit;
+    return this.api.post<any>(`${this.base}/detalle`, body);
   }
 
   updateNivelDetalle(id: number, payload: any) {

@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth } from '@features/auth/guards/auth.guard';
-import { AsignarCursoComponent } from './features/catalogos/cursos/components/asignar-curso/asignar-curso.component';
-import { AsignarDocenteComponent } from './features/docentes/pages/asignar-docente/asignar-docente.component';
 
 export const routes: Routes = [
   {
@@ -112,10 +110,17 @@ export const routes: Routes = [
     canActivate: [canActivateAuth],
     children: [
       {
+        path: 'anho-lectivo',
+        loadComponent: () =>
+          import('./features/catalogos/anio-lectivo/list/anio-lectivo-list.component').then(
+            (m) => m.AnioLectivoListComponent,
+          ),
+      },
+      {
         path: 'periodos',
         loadComponent: () =>
-          import('./features/catalogos/periodos/pages/periodo-list.component').then(
-            (m) => m.PeriodoListComponent,
+          import('./features/catalogos/periodos/pages/periodos-list.component').then(
+            (m) => m.PeriodosListComponent,
           ),
       },
       {
