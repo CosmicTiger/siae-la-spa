@@ -9,9 +9,9 @@
     </ng-template>
   </ng-container>
   <button *ngIf="newLabel" class="btn" (click)="create.emit()">{{ newLabel }}</button>
-  <button class="btn" type="button"
+  <!-- <button class="btn" type="button"
     (click)="toggleFilters()">{{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }}</button>
-  <button class="btn" type="button" (click)="resetFiltersAndSort()">Reiniciar Filtros y Ordenamientos</button>
+  <button class="btn" type="button" (click)="resetFiltersAndSort()">Reiniciar Filtros y Ordenamientos</button> -->
 </div>
 
 <div class="card overflow-hidden">
@@ -27,7 +27,7 @@
             </span>
           </button>
         </th>
-        <th class="px-4 py-3 text-left">Activo</th>
+        <th *ngIf="!hasActivoColumn" class="px-4 py-3 text-left">Activo</th>
         <th class="px-4 py-3 text-left">Acciones</th>
       </tr>
       <tr *ngIf="enableFilters && showFilters" class="bg-gray-100 text-xs text-gray-500">
@@ -50,17 +50,17 @@
               <ng-container
                 *ngSwitchCase="'fullName'">{{ (item?.nombres || '') + ' ' + (item?.apellidos || '') }}</ng-container>
               <ng-container *ngSwitchDefault>{{ item?.[col.key] ?? '—' }}</ng-container>
+              <ng-container *ngSwitchCase="'activo'">
+                <span class="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs"
+                  [class.bg-green-100]="item.activo" [class.text-green-800]="item.activo"
+                  [class.bg-gray-100]="!item.activo" [class.text-gray-700]="!item.activo">
+                  <span class="h-2 w-2 rounded-full" [class.bg-green-500]="item.activo"
+                    [class.bg-gray-400]="!item.activo"></span>
+                  {{ item.activo ? 'Sí' : 'No' }}
+                </span>
+              </ng-container>
             </ng-container>
           </ng-template>
-        </td>
-        <td class="px-4 py-3">
-          <span class="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs"
-            [class.bg-green-100]="item.activo" [class.text-green-800]="item.activo" [class.bg-gray-100]="!item.activo"
-            [class.text-gray-700]="!item.activo">
-            <span class="h-2 w-2 rounded-full" [class.bg-green-500]="item.activo"
-              [class.bg-gray-400]="!item.activo"></span>
-            {{ item.activo ? 'Sí' : 'No' }}
-          </span>
         </td>
         <td class="px-4 py-3">
           <div class="flex items-center gap-2">

@@ -1,6 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from '../../../../core/api.service';
 import { map } from 'rxjs/operators';
+import {
+  NivelDetalleCreateDto,
+  NivelDetalleResumenDto,
+} from '@app/core/models/nivel-detalle.model';
 
 @Injectable({ providedIn: 'root' })
 export class NivelService {
@@ -27,5 +31,41 @@ export class NivelService {
 
   delete(id: number) {
     return this.api.delete<any>(`${this.base}/${id}`);
+  }
+
+  getNivelesDetalle(nivelId: number | null = null) {
+    const params: any = {};
+    if (nivelId) params.nivelId = nivelId;
+
+    return this.api
+      .get<NivelDetalleResumenDto[]>(`${this.base}/detalle`, params)
+      .pipe(map((r) => r));
+  }
+
+  getCursosPorNivelDetalle() {
+    return this.api.get<any[]>(`/api/niveles/cursos`);
+  }
+
+  getCursosPorGrado(nivelId: number, gradoSeccionId: number) {
+    return this.api.get<any[]>(`/api/Grados/nivel/${nivelId}/grado/${gradoSeccionId}/cursos`);
+  }
+
+  createNivelDetalle(payload: NivelDetalleCreateDto) {
+    const body = { ...payload };
+    // prevent accidental server-managed fields
+    delete (body as any).fechaRegistro;
+    delete (body as any).audit;
+    return this.api.post<any>(`${this.base}/detalle`, body);
+  }
+
+  updateNivelDetalle(id: number, payload: any) {
+    return this.api.patch<any>(`${this.base}/detalle/${id}/vacantes`, payload);
+  }
+
+  asignarCursoANivel(
+    nivelId: number,
+    payload: { nivelDetalleId: number; cursoId: number; activo: boolean },
+  ) {
+    return this.api.post<any>(`${this.base}/${nivelId}/cursos`, payload);
   }
 }

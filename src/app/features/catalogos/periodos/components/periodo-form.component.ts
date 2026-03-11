@@ -1,46 +1,56 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  EntityDialogComponent,
+  FieldDef,
+} from '@app/shared/components/entity-dialog/entity-dialog.component';
 import { PeriodoService } from '../service/periodo.service';
 
 @Component({
   standalone: true,
-  selector: 'app-periodo-form',
-  imports: [CommonModule, FormsModule],
+  selector: 'app-periodo-dialog',
+  imports: [CommonModule, EntityDialogComponent],
   template: `
-    <div class="p-4 max-w-md">
-      <h3 class="text-lg font-semibold mb-3">Periodo</h3>
-      <label class="block">Nombre</label>
-      <input [(ngModel)]="model.nombre" class="input input-bordered w-full mb-2" />
-      <label class="block">Descripción</label>
-      <input [(ngModel)]="model.descripcion" class="input input-bordered w-full mb-2" />
-      <div class="flex gap-2">
-        <button class="btn btn-primary" (click)="save()">Guardar</button>
-        <button class="btn" (click)="reset()">Limpiar</button>
-      </div>
-      <div *ngIf="error" class="mt-2 text-red-500">{{ error }}</div>
-    </div>
+    <app-entity-dialog
+      [(open)]="open"
+      [title]="initial ? 'Editar Periodo' : 'Nuevo Periodo'"
+      [schema]="schema"
+      [initial]="initial"
+      [submitFn]="submitFn"
+      (closed)="onClosed($event)"
+    ></app-entity-dialog>
   `,
 })
 export class PeriodoFormComponent {
+  @Input() open = false;
+  @Input() initial: any | number | null = null;
+  @Output() openChange = new EventEmitter<boolean>();
+  @Output() closed = new EventEmitter<boolean>();
+
   private svc = inject(PeriodoService);
-  @Input() model: any = {};
-  error: string | null = null;
 
-  save() {
-    this.error = null;
-    if (this.model.id) {
-      this.svc
-        .update(this.model.id, this.model)
-        .subscribe({ next: () => {}, error: (e) => (this.error = 'Error') });
+  schema: FieldDef[] = [
+    { key: 'descripcion', label: 'Descripción', type: 'text' },
+    { key: 'orden', label: 'Orden', type: 'number' },
+    { key: 'activo', label: 'Activo', type: 'checkbox' },
+  ];
+
+  onClosed(ok: boolean) {
+    this.open = false;
+    this.openChange.emit(false);
+    this.closed.emit(!!ok);
+  }
+
+  submitFn = (initial: any, value: any) => {
+    const v = value as any;
+    const id = v.id || (typeof initial === 'number' ? initial : initial?.id);
+
+    if (id) {
+      const updateDto = { descripcion: v.descripcion, orden: v.orden, activo: v.activo ?? true };
+      return this.svc.update(id, updateDto);
     } else {
-      this.svc
-        .create(this.model)
-        .subscribe({ next: () => (this.model = {}), error: (e) => (this.error = 'Error') });
+      const createDto = { descripcion: v.descripcion, orden: v.orden, activo: v.activo ?? true };
+      return this.svc.create(createDto);
     }
-  }
-
-  reset() {
-    this.model = {};
-  }
+  };
 }

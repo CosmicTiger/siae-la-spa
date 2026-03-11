@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { DocentesService } from '../service/docentes.service';
+import { DocentesService } from '../../service/docentes.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DocenteReadDto } from '@app/core/models/persona.model';
-import { DocenteDialogComponent } from '../components/docente-dialog.component';
 import { DataTableComponent } from '@app/shared/components/data-table/data-table.component';
+import { DocenteDialogComponent } from '../../components/docente-dialog.component';
 
 @Component({
   standalone: true,
@@ -42,6 +42,7 @@ export class DocentesComponent {
     { key: 'documentoIdentidad', label: 'Documento' },
     { key: 'ciudad', label: 'Ciudad' },
     { key: 'direccion', label: 'Dirección' },
+    { key: 'activo', label: 'Activo' },
   ];
 
   constructor() {
@@ -83,9 +84,10 @@ export class DocentesComponent {
   }
 
   toggleActive(item: DocenteReadDto) {
+    console.log('Toggling active', item);
     const id = item.id || (item as any).docenteId;
     if (!id) return;
-    this.svc.setActive(id, !item.activo).subscribe({
+    this.svc.setActive(id, !item.activo, item).subscribe({
       next: () => this.load(),
       error: (err) => console.error('Error toggling active', err),
     });

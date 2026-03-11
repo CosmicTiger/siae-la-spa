@@ -1,24 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/service/auth.service';
+import { DashboardAdminComponent } from '../../dashboard/components/dashboard-admin.component';
+import { DashboardDireccionComponent } from '../../dashboard/components/dashboard-direccion.component';
 
 type Tile = { title: string; icon: string; to: string; cta?: string };
 
 @Component({
   standalone: true,
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [CommonModule, DashboardAdminComponent, DashboardDireccionComponent],
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
   auth = inject(AuthService);
-
-  tiles: Tile[] = [
-    { title: 'Configuración', icon: '🛠️', to: '/config/parametros', cta: 'Ver Configuración' },
-    { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
-    { title: 'Alumno', icon: '🎓', to: '/alumnos', cta: 'Ver Alumno' },
-    { title: 'Docente', icon: '🧑‍🏫', to: '/docentes', cta: 'Ver Docente' },
-    { title: 'Asignatura', icon: '📚', to: '/cursos', cta: 'Asignatura' },
-    { title: 'Usuario', icon: '⚙️', to: '/usuarios', cta: 'Usuario' },
-  ];
 }

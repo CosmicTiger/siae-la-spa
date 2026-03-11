@@ -43,12 +43,11 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Configuraciones',
       items: [
-        { label: 'Año Lectivo', to: '/catalogos/creacion_anho_lectivo' },
+        { label: 'Año Lectivo', to: '/catalogos/anho-lectivo' },
         { label: 'Periodos', to: '/catalogos/periodos' },
         { label: 'Niveles', to: '/catalogos/niveles' },
         { label: 'Grados y Secciones', to: '/catalogos/grado-seccion' },
         { label: 'Cursos', to: '/catalogos/cursos' },
-        { label: 'Vacantes', to: '/catalogos/vacantes' },
         { label: 'Horarios', to: '/catalogos/horarios' },
       ],
     },
@@ -58,19 +57,28 @@ export class NavbarComponent implements OnInit {
     },
     {
       label: 'Alumnos',
-      items: [{ label: 'Listado de Alumnos', to: '/alumnos' }],
+      items: [
+        { label: 'Listado de Alumnos', to: '/alumnos' },
+
+        { label: 'Agregar Calificación', to: '/calificaciones/alumno' },
+      ],
     },
     {
       label: 'Docentes',
       items: [
         { label: 'Listado de Docentes', to: '/docentes' },
-        { label: 'Agregar Currícula', to: '/docentes/curricula/nueva' },
-        { label: 'Agregar Calificación', to: '/docentes/calificaciones/nueva' },
-        { label: 'Listado de Períodos por Docente', to: '/docentes/periodos' },
-        { label: 'Nivel Grado Sección por Docente', to: '/docentes/niveles-grados-secciones' },
+        { label: 'Asignar Docente', to: '/asignar-docente' },
       ],
     },
-    { label: 'Cursos', items: [{ label: 'Listado de Cursos', to: '/catalogos/cursos' }] },
+    {
+      label: 'Cursos',
+      items: [
+        { label: 'Listado de Cursos', to: '/catalogos/cursos' },
+        { label: 'Asignar Cursos a grados', to: '/cursos/asignar' },
+        { label: 'Agregar Currícula', to: '/curriculas' },
+        { label: 'Ver Calificaciones', to: '/agrupadas' },
+      ],
+    },
     {
       label: 'Matrícula',
       items: [{ label: 'Historial Matrículas', to: '/matriculas' }],
@@ -79,7 +87,7 @@ export class NavbarComponent implements OnInit {
 
   tiles: Tile[] = [
     { title: 'Configuración', icon: '🛠️', to: '/config', cta: 'Ver Configuración' },
-    { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
+    // { title: 'Reporte', icon: '📊', to: '/reportes', cta: 'Ver Reporte' },
     { title: 'Alumno', icon: '🎓', to: '/alumnos', cta: 'Ver Alumno' },
     { title: 'Docente', icon: '🧑‍🏫', to: '/docentes', cta: 'Ver Docente' },
     { title: 'Asignatura', icon: '📚', to: '/cursos', cta: 'Asignatura' },
@@ -218,7 +226,7 @@ export class NavbarComponent implements OnInit {
       this.closeMenu();
       // focus back to the button
       const btn = this.el.nativeElement.querySelector(
-        `button[data-menu-btn="${label}"]`
+        `button[data-menu-btn="${label}"]`,
       ) as HTMLElement | null;
       btn?.focus();
     }

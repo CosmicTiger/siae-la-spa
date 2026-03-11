@@ -1,0 +1,18 @@
+<div class="p-4">
+  <h2 class="mb-3">Dashboard Admin</h2>
+  <div *ngIf="loading()">Cargando métricas...</div>
+  <div *ngIf="!loading() && data()">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card p-3">Usuarios totales: {{ data()!.totalUsers }}</div>
+      <div class="card p-3">Activos: {{ data()!.activeUsers }}</div>
+      <div class="card p-3">Pendientes: {{ data()!.pendingApprovals }}</div>
+    </div>
+
+    <div class="mt-4">
+      <h4>Matriculas por nivel</h4>
+      <ul>
+        <li *ngFor="let m of data()!.matriculasByNivel">{{ m.nivel }}: {{ m.count }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,15 @@ export interface PersonaReadDto {
   ciudad: string | null;
   direccion: string | null;
   activo: boolean;
+  sexo: Sexo;
+}
+
+// Audit metadata may be included in read DTOs
+import { AuditInfo } from './audit.model';
+
+export interface PersonaReadWithAuditDto extends PersonaReadDto {
+  fechaRegistro?: string;
+  audit?: AuditInfo;
 }
 
 export interface AlumnoReadDto extends PersonaReadDto {}
@@ -73,6 +82,7 @@ export interface MatriculaReadDto {
   institucionProcedencia?: string | null;
   esRepetente?: boolean;
   fechaRegistro: string;
+  audit?: AuditInfo;
 }
 
 // --- Detailed / resumen DTOs used in Alumno detail responses ---
@@ -107,6 +117,7 @@ export interface DocenteCursoDto {
   cursoDescripcion: string;
   activo: boolean;
   fechaRegistro: string;
+  audit?: AuditInfo;
 }
 
 export interface CurriculaCreateDto {
@@ -121,6 +132,7 @@ export interface CurriculaDto {
   descripcion: string;
   activo: boolean;
   fechaRegistro: string;
+  audit?: AuditInfo;
 }
 
 export interface CalificacionCreateDto {
@@ -135,6 +147,7 @@ export interface CalificacionReadDto {
   alumnoId: number;
   nota: number;
   fechaRegistro: string;
+  audit?: AuditInfo;
   activo: boolean;
 }
 
@@ -198,4 +211,11 @@ export interface AlumnoReadDetailDto {
   matriculaActual?: MatriculaActualDto | null;
   tutor?: TutorResumenDto | null;
   activo: boolean;
+}
+
+export interface DocenteAsignacionDto {
+  docenteId: number;
+  nivelDetalleCursoId: number;
+  activo: boolean;
+  propertyName?: string;
 }

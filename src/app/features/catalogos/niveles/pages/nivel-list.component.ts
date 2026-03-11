@@ -13,8 +13,10 @@ import { NivelService } from '../service/nivel.service';
       <ul *ngIf="!loading" class="space-y-2">
         <li *ngFor="let p of items()" class="p-2 border rounded flex justify-between">
           <div>
-            <strong>{{ p.nombre || p.descripcion }}</strong>
-            <div class="text-sm text-gray-600">Id: {{ p.id }}</div>
+            <strong>Nivel Académico: {{ p.descripcionNivel || 'Desconocido' }}</strong>
+            <div class="text-sm text-gray-400">
+              Turno: {{ p.descripcionTurno || 'Desconocido' }}
+            </div>
           </div>
           <div class="flex gap-2">
             <button class="btn btn-sm" (click)="edit(p)">Editar</button>

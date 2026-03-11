@@ -28,4 +28,8 @@ export class HorarioService {
   delete(id: number) {
     return this.api.delete<any>(`${this.base}/${id}`);
   }
+
+  eliminar(id: number) {
+    return this.api.post<any>(`${this.base}/eliminar/${id}`, null);
+  }
 }

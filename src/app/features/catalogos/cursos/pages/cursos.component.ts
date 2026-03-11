@@ -85,7 +85,7 @@ export class CursosComponent implements OnInit {
   toggleActive(item: CursoUpsertDto & { id: number }) {
     const id = item.id || (item as any).id;
     if (!id) return;
-    this.svc.setActive(id, !item.activo).subscribe({
+    this.svc.setActive(id, !item.activo, item).subscribe({
       next: () => this.load(),
       error: (err) => console.error('Error toggling active', err),
     });

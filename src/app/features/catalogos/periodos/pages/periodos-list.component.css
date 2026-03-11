@@ -1,0 +1,6 @@
+.periodos .list-group-item {
+  cursor: grab;
+}
+.periodos .card {
+  background: #f8f9fa;
+}

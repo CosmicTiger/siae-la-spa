@@ -1,0 +1,23 @@
+<div class="p-4">
+  <div class="d-flex justify-content-between items-center mb-3">
+    <h3 class="text-lg font-semibold">Periodos</h3>
+    <div>
+      <button class="btn btn-sm btn-primary" (click)="openNew()">Nuevo</button>
+    </div>
+  </div>
+  <div *ngIf="loading">Cargando...</div>
+  <ul *ngIf="!loading" class="space-y-2">
+    <li *ngFor="let p of items()" class="p-2 border rounded flex justify-between">
+      <div>
+        <strong>{{ p.nombre || p.descripcion }}</strong>
+        <div class="text-sm text-gray-600">Orden del período: {{ p.orden || 'Sin definir' }}</div>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-sm" (click)="edit(p)">Editar</button>
+        <button class="btn btn-sm btn-error" (click)="remove(p.id)">Eliminar</button>
+      </div>
+    </li>
+  </ul>
+  <app-periodo-dialog [(open)]="dialogOpen" [initial]="dialogInitial" (closed)="onDialogClosed($event)">
+  </app-periodo-dialog>
+</div>
