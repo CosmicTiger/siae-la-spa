@@ -8,7 +8,29 @@ export class MatriculaService {
   private base = '/api/matriculas';
 
   registrar(payload: any) {
-    return this.api.post<any>(this.base, payload);
+    const body: any = { ...payload };
+
+    // Map frontend field names to backend expected names
+    if (body['periodoId'] != null && body['anioLectivoId'] == null) {
+      body['anioLectivoId'] = body['periodoId'];
+      delete body['periodoId'];
+    }
+    if (body['cursoId'] != null && body['nivelDetalleId'] == null) {
+      body['nivelDetalleId'] = body['cursoId'];
+      delete body['cursoId'];
+    }
+    // rename boolean repetente field if present (typo differences)
+    if (body['esRepetente'] != null && body['esRepitente'] == null) {
+      body['esRepitente'] = body['esRepetente'];
+      delete body['esRepetente'];
+    }
+
+    // Ensure explicit nulls for optional fields the backend expects
+    if (!('apoderadoId' in body)) body['apoderadoId'] = null;
+    if (!('situacion' in body)) body['situacion'] = null;
+    if (!('institucionProcedencia' in body)) body['institucionProcedencia'] = null;
+
+    return this.api.post<any>(this.base, body);
   }
 
   listar(page = 1, pageSize = 10, filter?: any) {

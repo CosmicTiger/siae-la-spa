@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -76,7 +77,7 @@ export interface DireccionDashboardDto {
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  private base = '/api/dashboard';
+  private base = environment.apiBase + '/api/dashboard';
   private adminSummary$ = new BehaviorSubject<AdminDashboardDto | null>(null);
   private adminSummaryFetchedAt = 0;
 
@@ -91,10 +92,12 @@ export class DashboardService {
     if (!force && cached && Date.now() - this.adminSummaryFetchedAt < ttl) {
       return of(cached as AdminDashboardDto);
     }
-    return this.http.get<ApiResponse<AdminDashboardDto>>(`${this.base}/admin`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/admin`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as AdminDashboardDto;
+        const payload = r.data as any;
+        // API returns { data: { summary: {...}, activity: {...}, ... } }
+        return (payload?.summary ?? payload) as AdminDashboardDto;
       }),
       tap((s) => {
         this.adminSummary$.next(s);
@@ -105,52 +108,79 @@ export class DashboardService {
   }
 
   getAdminActivity(): Observable<ActivitySummaryDto> {
-    return this.http.get<ApiResponse<ActivitySummaryDto>>(`${this.base}/admin/activity`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/admin/activity`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as ActivitySummaryDto;
+        const payload = r.data as any;
+        return (payload?.activity ?? payload) as ActivitySummaryDto;
       }),
       catchError((err) => this.handleError(err, 'getAdminActivity')),
     );
   }
 
   getAdminDataQuality(): Observable<DataQualityDto> {
-    return this.http.get<ApiResponse<DataQualityDto>>(`${this.base}/admin/data-quality`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/admin/data-quality`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as DataQualityDto;
+        const payload = r.data as any;
+        return (payload?.dataQuality ?? payload) as DataQualityDto;
       }),
       catchError((err) => this.handleError(err, 'getAdminDataQuality')),
     );
   }
 
   getAdminApprovalAging(): Observable<ApprovalAgingDto> {
-    return this.http.get<ApiResponse<ApprovalAgingDto>>(`${this.base}/admin/approval-aging`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/admin/approval-aging`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as ApprovalAgingDto;
+        const payload = r.data as any;
+        return (payload?.approvalAging ?? payload) as ApprovalAgingDto;
       }),
       catchError((err) => this.handleError(err, 'getAdminApprovalAging')),
     );
   }
 
   getAdminAcademic(): Observable<AcademicSummaryDto> {
-    return this.http.get<ApiResponse<AcademicSummaryDto>>(`${this.base}/admin/academic`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/admin/academic`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as AcademicSummaryDto;
+        const payload = r.data as any;
+        return (payload?.academicSummary ?? payload) as AcademicSummaryDto;
       }),
       catchError((err) => this.handleError(err, 'getAdminAcademic')),
     );
   }
 
   getDireccionSummary(): Observable<DireccionDashboardDto> {
-    return this.http.get<ApiResponse<DireccionDashboardDto>>(`${this.base}/direccion`).pipe(
+    return this.http.get<ApiResponse<any>>(`${this.base}/direccion`).pipe(
       map((r) => {
         if (!r.ok) throw new Error(r.message || 'Error');
-        return r.data as DireccionDashboardDto;
+        const payload = r.data as any;
+        return (payload?.summary ?? payload) as DireccionDashboardDto;
       }),
       catchError((err) => this.handleError(err, 'getDireccionSummary')),
+    );
+  }
+
+  // KPI endpoints
+  getKpiSexTrend(): Observable<any> {
+    return this.http.get<ApiResponse<any>>(`${this.base}/kpi/sex-trend`).pipe(
+      map((r) => {
+        if (!r.ok) throw new Error(r.message || 'Error');
+        return r.data;
+      }),
+      catchError((err) => this.handleError(err, 'getKpiSexTrend')),
+    );
+  }
+
+  getKpiEnrollmentBySection(anio?: number): Observable<any> {
+    const qs = anio ? `?anio=${anio}` : '';
+    return this.http.get<ApiResponse<any>>(`${this.base}/kpi/enrollment-by-section${qs}`).pipe(
+      map((r) => {
+        if (!r.ok) throw new Error(r.message || 'Error');
+        return r.data;
+      }),
+      catchError((err) => this.handleError(err, 'getKpiEnrollmentBySection')),
     );
   }
 

@@ -22,10 +22,11 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm">Periodo</label>
-          <select formControlName="periodoId" class="input">
+          <label class="block text-sm">Año lectivo</label>
+          <select formControlName="anioLectivoId" class="input">
             <option [ngValue]="null">-- Seleccione --</option>
-            <option *ngFor="let p of periodos" [value]="p.id">{{ p.nombre || p.descripcion || p.id }}</option>
+            <option *ngFor="let a of anioLectivos" [value]="a.id">
+              {{ a.anio }}{{ a.descripcion ? ' - ' + a.descripcion : '' }}</option>
           </select>
         </div>
         <div>
@@ -52,7 +53,7 @@
       <div class="flex items-center gap-3">
         <label class="flex items-center gap-2">
           <input type="checkbox" formControlName="esRepetente" />
-          <span class="text-sm">Es repetente</span>
+          <span class="text-sm">Es repitente</span>
         </label>
       </div>
 

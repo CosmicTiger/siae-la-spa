@@ -1,11 +1,29 @@
 <!-- tiles -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <!-- quick KPIs / charts for admin -->
+  <ng-container *ngIf="auth.isAuthenticated() && auth.roles().includes('Admin')">
+    <div class="col-span-full mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="card p-4">
+          <h4 class="mb-2">Tendencia por sexo</h4>
+          <apx-chart *ngIf="sexTrendChart()" [series]="sexTrendChart().series" [chart]="sexTrendChart().chart"
+            [xaxis]="sexTrendChart().xaxis"></apx-chart>
+        </div>
+
+        <div class="card p-4">
+          <h4 class="mb-2">Matriculas por Sección (año actual)</h4>
+          <apx-chart *ngIf="enrollmentChart()" [series]="enrollmentChart().series" [chart]="enrollmentChart().chart"
+            [xaxis]="enrollmentChart().xaxis"></apx-chart>
+        </div>
+      </div>
+    </div>
+  </ng-container>
   <!-- Dashboard area: show admin or direccion based on roles -->
   <ng-container *ngIf="auth.isAuthenticated() && auth.roles().includes('Admin')">
     <app-dashboard-admin></app-dashboard-admin>
   </ng-container>
   <ng-container
-    *ngIf="auth.isAuthenticated() && (auth.roles().includes('Direccion') || auth.roles().includes('Director'))">
+    *ngIf="auth.isAuthenticated() && auth.roles().includes('Admin') && (auth.roles().includes('Direccion') || auth.roles().includes('Director'))">
     <app-dashboard-direccion></app-dashboard-direccion>
   </ng-container>
 </div>
