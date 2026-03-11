@@ -16,7 +16,7 @@ import { MatriculasService } from '../service/matriculas.service';
 import { MatriculaCreateDto } from '../../../core/models/persona.model';
 import { AlumnosService } from '../../alumnos/service/alumnos.service';
 import { NivelesService } from '../../catalogos/niveles/service/niveles.service';
-import { PeriodosService } from '../../catalogos/periodos/service/periodos.service';
+import { AnioLectivoService } from '../../catalogos/anio-lectivo/anio-lectivo.service';
 
 @Component({
   standalone: true,
@@ -38,7 +38,7 @@ export class MatriculaDialogComponent implements OnInit {
 
   alumnos: any[] = [];
   niveles: any[] = [];
-  periodos: any[] = [];
+  anioLectivos: any[] = [];
   // simple client-side filter terms for typeahead
   alumnoFilter = '';
   apoderadoFilter = '';
@@ -50,7 +50,7 @@ export class MatriculaDialogComponent implements OnInit {
     const q = (this.alumnoFilter || '').toString().trim().toLowerCase();
     if (!q) return this.alumnos;
     return this.alumnos.filter(
-      (a) => `${a.nombres} ${a.apellidos}`.toLowerCase().includes(q) || `${a.id}` === q
+      (a) => `${a.nombres} ${a.apellidos}`.toLowerCase().includes(q) || `${a.id}` === q,
     );
   }
 
@@ -58,7 +58,7 @@ export class MatriculaDialogComponent implements OnInit {
     const q = (this.apoderadoFilter || '').toString().trim().toLowerCase();
     if (!q) return this.alumnos;
     return this.alumnos.filter(
-      (a) => `${a.nombres} ${a.apellidos}`.toLowerCase().includes(q) || `${a.id}` === q
+      (a) => `${a.nombres} ${a.apellidos}`.toLowerCase().includes(q) || `${a.id}` === q,
     );
   }
 
@@ -67,12 +67,12 @@ export class MatriculaDialogComponent implements OnInit {
     private svc: MatriculasService,
     private alumnosSvc: AlumnosService,
     private nivelesSvc: NivelesService,
-    private periodosSvc: PeriodosService
+    private anioLectivoSvc: AnioLectivoService,
   ) {
     this.form = this.fb.group({
       alumnoId: [null, Validators.required],
       nivelDetalleId: [null, Validators.required],
-      periodoId: [null, Validators.required],
+      anioLectivoId: [null, Validators.required],
       apoderadoId: [null],
       situacion: [''],
       institucionProcedencia: [''],
@@ -84,7 +84,7 @@ export class MatriculaDialogComponent implements OnInit {
     // load lists for selects
     this.alumnosSvc.list(1, 200).subscribe((r) => (this.alumnos = r.items || []));
     this.nivelesSvc.list().subscribe((r) => (this.niveles = r || []));
-    this.periodosSvc.list().subscribe((r) => (this.periodos = r || []));
+    this.anioLectivoSvc.list().subscribe((r) => (this.anioLectivos = r || []));
 
     if (this.alumnoId != null) {
       this.form.patchValue({ alumnoId: this.alumnoId });
@@ -117,22 +117,25 @@ export class MatriculaDialogComponent implements OnInit {
     this.loading = true;
     this.error = '';
     const v = this.form.value as any;
-    // normalize payload to match MatriculaCreateDto (required numeric ids must be numbers)
-    const payload = {
+    // normalize payload (send anioLectivoId field to match backend change)
+    const payload: any = {
       alumnoId: Number(v.alumnoId),
       nivelDetalleId: Number(v.nivelDetalleId),
-      periodoId: Number(v.periodoId),
+      anioLectivoId: Number(v.anioLectivoId),
       apoderadoId: v.apoderadoId != null ? Number(v.apoderadoId) : undefined,
       situacion: v.situacion || null,
       institucionProcedencia: v.institucionProcedencia || null,
       esRepetente: !!v.esRepetente,
-    } as MatriculaCreateDto;
+    };
 
     // client-side duplicate check: ask existing matriculas for this alumno
     this.svc.byAlumno(payload.alumnoId).subscribe((existing) => {
-      const duplicate = (existing || []).some(
-        (m) => m.nivelDetalleId === payload.nivelDetalleId && m.periodoId === payload.periodoId
-      );
+      const duplicate = (existing || []).some((m) => {
+        const yearMatch =
+          m.periodoId === Number(v.anioLectivoId) ||
+          (m as any).anioLectivoId === Number(v.anioLectivoId);
+        return m.nivelDetalleId === payload.nivelDetalleId && yearMatch;
+      });
       if (duplicate) {
         this.loading = false;
         this.error = 'El alumno ya está matriculado en ese nivel y período.';
@@ -157,7 +160,7 @@ export class MatriculaDialogComponent implements OnInit {
       try {
         const hostEl = this.host?.nativeElement || document;
         const invalid = hostEl.querySelector(
-          '[formcontrolname].ng-invalid, .ng-invalid[formcontrolname]'
+          '[formcontrolname].ng-invalid, .ng-invalid[formcontrolname]',
         ) as HTMLElement | null;
         if (invalid) {
           // try to focus the control itself or the first focusable child
@@ -166,7 +169,7 @@ export class MatriculaDialogComponent implements OnInit {
             return;
           }
           const focusable = invalid.querySelector(
-            'input,select,textarea,button'
+            'input,select,textarea,button',
           ) as HTMLElement | null;
           focusable?.focus();
         }

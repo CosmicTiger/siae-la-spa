@@ -25,6 +25,8 @@ describe('MatriculasService', () => {
     service.create(payload).subscribe();
     const req = httpMock.expectOne(`${environment.apiBase}/api/matriculas`);
     expect(req.request.method).toBe('POST');
+    // payload should be mapped to use 'anioLectivoId'
+    expect(req.request.body.anioLectivoId).toBe(3);
     req.flush({ message: 'ok', data: null });
   });
 });

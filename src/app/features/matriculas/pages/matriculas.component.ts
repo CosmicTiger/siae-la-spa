@@ -12,7 +12,7 @@ import {
   FieldDef,
 } from '@app/shared/components/entity-dialog/entity-dialog.component';
 import { NivelesService } from '../../catalogos/niveles/service/niveles.service';
-import { PeriodosService } from '../../catalogos/periodos/service/periodos.service';
+import { AnioLectivoService } from '../../catalogos/anio-lectivo/anio-lectivo.service';
 import { Validators } from '@angular/forms';
 
 @Component({
@@ -33,7 +33,7 @@ export class MatriculasComponent implements OnInit {
     { key: 'nivel', label: 'Nivel' },
     { key: 'turno', label: 'Turno' },
     { key: 'gradoSeccion', label: 'Grado/Sección' },
-    { key: 'periodoId', label: 'Periodo' },
+    { key: 'anioLectivo', label: 'Año lectivo' },
     { key: 'fechaRegistro', label: 'Fecha' },
     { key: 'apoderadoId', label: 'Apoderado' },
     { key: 'activo', label: 'Activo' },
@@ -45,17 +45,19 @@ export class MatriculasComponent implements OnInit {
   onInitFn: any = null;
 
   private nivelesSvc!: NivelesService;
-  private periodosSvc!: PeriodosService;
+  private anioLectivoSvc!: AnioLectivoService;
+
+  anioLectivos: any[] = [];
 
   constructor(
     private svc: MatriculasService,
     private alumnosSvc: AlumnosService,
     private modalSvc: MatriculaModalService,
     private nivelesSvcInject: NivelesService,
-    private periodosSvcInject: PeriodosService,
+    private anioLectivoSvcInject: AnioLectivoService,
   ) {
     this.nivelesSvc = this.nivelesSvcInject;
-    this.periodosSvc = this.periodosSvcInject;
+    this.anioLectivoSvc = this.anioLectivoSvcInject;
   }
 
   onAlumnoChange(e: Event) {
@@ -80,9 +82,11 @@ export class MatriculasComponent implements OnInit {
 
   private prepareListsAndSchema() {
     const pNiveles = this.nivelesSvc ? this.nivelesSvc.list().toPromise() : Promise.resolve([]);
-    const pPeriodos = this.periodosSvc ? this.periodosSvc.list().toPromise() : Promise.resolve([]);
+    const pAnioLectivos = this.anioLectivoSvc
+      ? this.anioLectivoSvc.list().toPromise()
+      : Promise.resolve([]);
 
-    Promise.all([pNiveles, pPeriodos]).then(([niveles, periodos]: any) => {
+    Promise.all([pNiveles, pAnioLectivos]).then(([niveles, anios]: any) => {
       const alumnoOptions = (this.alumnos || []).map((a) => ({
         value: a.id,
         label: `${a.nombres} ${a.apellidos}`,
@@ -91,9 +95,10 @@ export class MatriculasComponent implements OnInit {
         value: n.nivelDetalleId ?? n.id ?? n.nivelId,
         label: n.nivelDescripcion || n.nombre || n.descripcionNivel || `${n.id}`,
       }));
-      const periodoOptions = (periodos || []).map((p: any) => ({
-        value: p.id ?? p.periodoId,
-        label: p.nombre || p.descripcion || `${p.id}`,
+      this.anioLectivos = anios || [];
+      const periodoOptions = (this.anioLectivos || []).map((p: any) => ({
+        value: p.id,
+        label: `${p.anio}${p.descripcion ? ' - ' + p.descripcion : ''}`,
       }));
 
       this.schema = [
@@ -112,8 +117,8 @@ export class MatriculasComponent implements OnInit {
           validators: [Validators.required],
         },
         {
-          key: 'periodoId',
-          label: 'Periodo',
+          key: 'anioLectivoId',
+          label: 'Año lectivo',
           type: 'select',
           options: periodoOptions,
           validators: [Validators.required],
@@ -121,7 +126,7 @@ export class MatriculasComponent implements OnInit {
         { key: 'apoderadoId', label: 'Apoderado', type: 'select', options: alumnoOptions },
         { key: 'situacion', label: 'Situación', type: 'text' },
         { key: 'institucionProcedencia', label: 'Institución procedencia', type: 'text' },
-        { key: 'esRepetente', label: 'Es repetente', type: 'checkbox' },
+        { key: 'esRepitente', label: 'Es repetente', type: 'checkbox' },
       ];
 
       this.submitFn = (initial: any, value: any) => {
@@ -129,11 +134,11 @@ export class MatriculasComponent implements OnInit {
         const payload = {
           alumnoId: Number(v.alumnoId),
           nivelDetalleId: Number(v.nivelDetalleId),
-          periodoId: Number(v.periodoId),
+          anioLectivoId: Number(v.anioLectivoId),
           apoderadoId: v.apoderadoId ? Number(v.apoderadoId) : undefined,
           situacion: v.situacion || null,
           institucionProcedencia: v.institucionProcedencia || null,
-          esRepetente: !!v.esRepetente,
+          esRepitente: !!v.esRepitente,
         };
         return this.svc.create(payload as any);
       };
@@ -165,6 +170,12 @@ export class MatriculasComponent implements OnInit {
           ).trim() || '—',
         fechaRegistro: m.fechaRegistro,
         apoderadoId: m.apoderadoId || '—',
+        // derive display label for año lectivo from loaded anioLectivos or fall back to ids
+        anioLectivo:
+          this.anioLectivos.find((a) => a.id === (m.anioLectivoId ?? m.periodoId))?.anio ||
+          this.anioLectivos.find((a) => a.id === (m.anioLectivoId ?? m.periodoId))?.descripcion ||
+          (m.anioLectivoId ?? m.periodoId) ||
+          '—',
       }));
     });
   }

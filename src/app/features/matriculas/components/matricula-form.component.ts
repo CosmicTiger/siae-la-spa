@@ -37,8 +37,8 @@ import { MatriculaService } from '../service/matricula.service';
       </div>
 
       <div class="mb-4">
-        <label class="block font-semibold">Periodo</label>
-        <input formControlName="periodoId" type="number" class="input input-bordered w-full" />
+        <label class="block font-semibold">Año lectivo</label>
+        <input formControlName="anioLectivoId" type="number" class="input input-bordered w-full" />
       </div>
 
       <div class="flex items-center gap-2">
@@ -59,7 +59,7 @@ export class MatriculaFormComponent {
     documento: ['', Validators.required],
     nombres: ['', Validators.required],
     cursoId: [null, Validators.required],
-    periodoId: [null, Validators.required],
+    anioLectivoId: [null, Validators.required],
   });
 
   loading = false;
@@ -79,7 +79,7 @@ export class MatriculaFormComponent {
     }
     const val = this.form.value;
     const cursoId = Number(val.cursoId);
-    const periodoId = Number(val.periodoId);
+    const periodoId = Number(val.anioLectivoId);
     this.loading = true;
 
     // First, check vacantes

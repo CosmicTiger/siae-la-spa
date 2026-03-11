@@ -1,18 +1,44 @@
-<div class="p-4">
-  <h2 class="mb-3">Dashboard Admin</h2>
+<div class="p-4 w-max">
   <div *ngIf="loading()">Cargando métricas...</div>
-  <div *ngIf="!loading() && data()">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="card p-3">Usuarios totales: {{ data()!.totalUsers }}</div>
-      <div class="card p-3">Activos: {{ data()!.activeUsers }}</div>
-      <div class="card p-3">Pendientes: {{ data()!.pendingApprovals }}</div>
+  <div *ngIf="!loading() && error()" class="text-red-500">Error: {{ error() }}</div>
+  <div *ngIf="!loading() && !error() && data()">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 width-max">
+      <div class="card p-6 h-32 w-32 flex flex-col justify-center">
+        <div class="text-sm text-gray-400">Usuarios totales</div>
+        <div class="text-2xl font-semibold">{{ data()!.totalUsers }}</div>
+      </div>
+      <div class="card p-6 h-32 w-32 flex flex-col justify-center">
+        <div class="text-sm text-gray-400">Activos</div>
+        <div class="text-2xl font-semibold">{{ data()!.activeUsers }}</div>
+      </div>
+      <div class="card p-6 h-32 w-32 flex flex-col justify-center">
+        <div class="text-sm text-gray-400">Pendientes</div>
+        <div class="text-2xl font-semibold">{{ data()!.pendingApprovals }}</div>
+      </div>
+      <div class="card p-6 h-32 w-32 flex flex-col justify-center">
+        <div class="text-sm text-gray-400">Nuevos (30d)</div>
+        <div class="text-2xl font-semibold">{{ data()!.newRegistrationsLast30Days }}</div>
+      </div>
     </div>
 
-    <div class="mt-4">
-      <h4>Matriculas por nivel</h4>
-      <ul>
-        <li *ngFor="let m of data()!.matriculasByNivel">{{ m.nivel }}: {{ m.count }}</li>
-      </ul>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 w-max">
+      <div class="col-span-1">
+        <apx-chart *ngIf="matriculasChart()" [series]="matriculasChart().series" [chart]="matriculasChart().chart"
+          [labels]="matriculasChart().labels" [legend]="matriculasChart().legend"></apx-chart>
+        <h4>Matriculas por nivel</h4>
+      </div>
+
+      <div class="col-span-1">
+        <apx-chart *ngIf="usersByRoleChart()" [series]="usersByRoleChart().series" [chart]="usersByRoleChart().chart"
+          [xaxis]="usersByRoleChart().xaxis"></apx-chart>
+        <h4>Usuarios por rol</h4>
+      </div>
+
+      <!-- <div class="col-span-1">
+        <apx-chart *ngIf="loginsChart()" [series]="loginsChart().series" [chart]="loginsChart().chart"
+          [xaxis]="loginsChart().xaxis"></apx-chart>
+        <h4>Logins (por día)</h4>
+      </div> -->
     </div>
   </div>
 </div>

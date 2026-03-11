@@ -65,11 +65,16 @@ export interface AlumnoCreateResultDto {
 export interface MatriculaCreateDto {
   alumnoId: number;
   nivelDetalleId: number;
-  periodoId: number;
+  // Backend now expects 'anioLectivoId'
+  anioLectivoId: number;
+  // backward-compatibility: some callers may still provide periodoId
+  periodoId?: number;
   apoderadoId?: number | null;
   situacion?: string | null;
   institucionProcedencia?: string | null;
+  // backend may use esRepitente (note spelling) — keep both optional
   esRepetente?: boolean;
+  esRepitente?: boolean;
 }
 
 export interface MatriculaReadDto {
@@ -77,10 +82,13 @@ export interface MatriculaReadDto {
   alumnoId: number;
   nivelDetalleId: number;
   periodoId: number;
+  // new backend field
+  anioLectivoId?: number;
   apoderadoId?: number | null;
   situacion?: string | null;
   institucionProcedencia?: string | null;
   esRepetente?: boolean;
+  esRepitente?: boolean;
   fechaRegistro: string;
   audit?: AuditInfo;
 }
@@ -188,6 +196,7 @@ export interface MatriculaActualDto {
   matriculaId: number;
   nivel: NivelDetalleDto;
   periodoId: number;
+  anioLectivoId?: number;
   situacion?: string | null;
   esRepetente?: boolean | null;
   apoderadoId?: number | null;

@@ -10,22 +10,40 @@ export class MatriculasService {
 
   // POST /api/matriculas
   create(payload: MatriculaCreateDto) {
-    return this.api.post<MatriculaReadDto>(this.base, payload);
+    const body: any = { ...payload } as any;
+
+    // backend now expects 'anioLectivoId' instead of 'periodoId'
+    if ((body as any).periodoId != null && (body as any).anioLectivoId == null) {
+      body.anioLectivoId = (body as any).periodoId;
+      delete (body as any).periodoId;
+    }
+    // handle name mismatch for repetente flag
+    if ((body as any).esRepetente != null && (body as any).esRepitente == null) {
+      body.esRepitente = (body as any).esRepetente;
+      delete (body as any).esRepetente;
+    }
+
+    // ensure optional fields exist
+    if (!('apoderadoId' in body)) body.apoderadoId = null;
+    if (!('situacion' in body)) body.situacion = null;
+    if (!('institucionProcedencia' in body)) body.institucionProcedencia = null;
+
+    return this.api.post<MatriculaReadDto>(this.base, body);
   }
 
   // GET /api/matriculas/by-alumno/{alumnoId}
-  byAlumno(alumnoId: number, periodoId?: number) {
+  byAlumno(alumnoId: number, anioLectivoId?: number) {
     const url = `${this.base}/by-alumno/${alumnoId}`;
     const params: Record<string, any> = {};
-    if (periodoId != null) params['periodoId'] = periodoId;
+    if (anioLectivoId != null) params['anioLectivoId'] = anioLectivoId;
     return this.api.get<MatriculaReadDto[]>(url, params).pipe(map((r) => r!));
   }
 
   // GET /api/matriculas/by-nivel-detalle/{nivelDetalleId}
-  byNivelDetalle(nivelDetalleId: number, periodoId?: number) {
+  byNivelDetalle(nivelDetalleId: number, anioLectivoId?: number) {
     const url = `${this.base}/by-nivel-detalle/${nivelDetalleId}`;
     const params: Record<string, any> = {};
-    if (periodoId != null) params['periodoId'] = periodoId;
+    if (anioLectivoId != null) params['anioLectivoId'] = anioLectivoId;
     return this.api.get<MatriculaReadDto[]>(url, params).pipe(map((r) => r!));
   }
 }
